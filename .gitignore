@@ -1,0 +1,6 @@
+documents/*.aux
+documents/*.bbl
+documents/*.blg
+documents/*.log
+documents/*.pdf
+documents/*.synctex.gz
