@@ -1,0 +1,133 @@
+\documentclass[12pt]{article}
+
+% This first part of the file is called the PREAMBLE. It includes
+% customizations and command definitions. The preamble is everything
+% between \documentclass and \begin{document}.
+
+\usepackage[margin=1in]{geometry}  % set the margins to 1in on all sides
+\usepackage{graphicx}              % to include figures
+\usepackage{epstopdf}
+\usepackage{amsmath}               % great math stuff
+\usepackage{amsfonts}              % for blackboard bold, etc
+\usepackage{amsthm}                % better theorem environments
+
+
+
+
+\begin{document}
+
+\begin{center}
+{\bf \Large Visual Saliency: A Project Proposal}  \\
+\vspace{.1in}
+{\em Sijie Lin, Shupei Zhang, Mehdi Akbarian Rastaghi}
+\end{center}
+%\setlength\parindent{0pt}
+\section{Introduction}
+Visual saliency is the different extent of attraction of different objects to our visual system. Human visual system
+is developed to focus on the most salient stimuli and pay less attention to the rest. A reason for developing such a 
+feature is that the amount of data we receive through our eyes exceeds our ability to process data. 
+The human retina has approximately 6 million cones and 120 million rods\cite{PhotoreceptorCell2021}, which are responsible for color vision 
+and night vision, respectively. Such huge amount of photoreceptors generates huge amount of data, and it is a big challenge for our brain to 
+process it efficiently.
+Visual saliency helps us identify the most imminent threat, danger, or events needing our attention in general. Therefore it reduces 
+the load in our visual system.
+
+Study visual saliency can help us have a deeper understanding of human visual system. This can lead to many applications, such as
+image/video segmentation, image/video compression, foreground annotation, perceptual quality assesment etc\cite{congReviewVisualSaliency2019}.
+For example, all the current video coding methods are block-based compression. Spacial redundancy is reduced through intra-frame coding and temporal 
+redundancy is reduced through inter-frame coding\cite{sullivanOverviewHighEfficiency2012}. With visual saliency information, encoders can further increase
+the compression ratio by decreasing the quality of regions of low intrest, for example, the background. Because it is hard for us to notice the changes in those regions,
+the perceptual visual quality will likely remain the same. Moreover, visual saliency study might help game developers in optimizing the performance 
+of their games. Due to the difference in attraction of different regions, not all regions need to be rendered in the highest quality.
+This can help games achieve better graphics performance. Therefore, we think it is important to do some research in this area.
+\section{Related Work}
+Visual saliency detection methods can be categorized into two two classes: bottom-up models and top-down models\cite{congReviewVisualSaliency2019}.
+Before deep learning was widely applied in this field, most of the early methods are bottom-up models.
+Those early methods usually involve biological and psychological research about visual attention mechanism. And those two approaches match the common beliefs about biological process of human vision.
+In general, those models try to establish links between visual saliency and low-level image features, such as color, contrast, brightness etc. The Itti. model\cite{ittiModelSaliencybasedVisual1998}
+is one of the earliest model of this kind, which predicts visual saliency from linear combination of features calculated from color, intensity and orientation.
+Some other techniques are also used to achieve better results, such as frequency domain analysis, sparse representation, cellular automata etc\cite{congReviewVisualSaliency2019}.
+
+Top-down models, in the other hand, try to find what factors have the most impact on visual saliency. Those models use visual saliency data, and analyze them in a data-driven fashion.
+In recent years, deep learning is introduced into this area and has boosted the performance of saliency prediction a lot.
+Vig et al. \cite{vigLargeScaleOptimizationHierarchical2014} proposed the first neural network for saliency prediction, combining CNN and SVM. Later, researchers start to use transfer learning for saliency 
+detection tasks. VGG is used in multiple models\cite{kruthiventiDeepFixFullyConvolutional2015, kummererDeepGazeIIReading2016, corniaPredictingHumanEye2018}, and some of them incorporate gaussian prior for performance improvement.
+Generative adversarial networks also achieve good results in saliency prediction\cite{panSalGANVisualSaliency2018, cheHowGazeInfluenced2020}.
+
+Attention mechanisms were first applied in natural language processing (NLP) models for their ability to model long range and multi-level information\cite{bahdanauNeuralMachineTranslation2016a, vaswaniAttentionAllYou2017a}.
+They are later introduced for computer vision tasks and show strong potential in modeling non-local dependencies in images\cite{zhangSelfAttentionGenerativeAdversarial2019a}.
+But this technique has not been applied in visual saliency tasks so far.
+
+\section{Sijie's part (not sure where this belongs to)}
+From the aspect of cognitive psychology, there are also some evidence that may support our trial. There are two contradictory models that try to explain human attention mechanism[??]. 
+In the “Early Selection Model”, complete analysis is not necessary for an unimportant stimulus before it is excluded from our focus area, while in the “Late Selection Model”, all the stimuli are equally processed until they reach at least the semantic level. 
+Both models have evidence and the key to solving the divergence is to find the threshold between them. From this view, since CNN usually have small receptive fields in the first few layers, the information is highly abstract for high level analysis, so traditional models can be regarded as similar to the late selection. 
+The computer vision attention mechanism focuses more on global information, and we guess that its low level of preprocessing can ease the burden of CNN and guide it to a better result.
+
+\section{Data}
+\subsection{Data Sets}
+The data sets that are commonly used for image saliency detection tasks are MIT 1003[??], CAT2000[??] and SALICON[??].
+In all these three data sets, the original data are normal pictures with a dimension of about 1000. Grey margins are attached to some of the pictures to make them the same size. 
+The labels, or the training targets are heatmaps that highlight some regions that are of interest from experiment data of human.
+(Figure here)
+
+The variety of the public parts of these three data sets are also different. MIT1003 is mainly composed of sceneries and portraits, while the 10,000 figures of SALICON are divided to 100 categories by the objects in them. CAT2000 is more challengeable because it has pictures even in different style, like sketch or inversed photo. 
+It must be mentioned that the labels of SALICON is obtained by mouse clicking on rather than eye tracking. Therefore, the distributions of heatmaps are correlated but have minor differences from those of the other two data sets.
+
+\subsection{Interpretability}
+Since this task is a regression task rather than a classification task, the output heatmaps can partly explain themselves. 
+However, since we are doing analysis on existing CNN framework and use “attention” mechanism as a part of our framework, we should carefully analyze the contribution of these two components. 
+Besides comparing the result with their separate performance, we would also disable or disturb the attention mechanism on the trained model to infer their separate roles and cooperation in this task.
+
+Since the heatmaps usually have smoothed margin, when we are doing cross validation or creating random maps to verify our results, it is not appropriate to simple assign random values to create a fake heatmap. 
+The random maps that will be used for comparison should also resemble the distribution of heatmaps in the data set.
+
+\section{Analysis}
+\subsection{Algorithm}
+The basic CNN framework of our model will be based on [??]. Before the picture is directly sent into the framework, an attention framework [??] will firstly assign weights to different parts of the picture. 
+The training process can be described as follows:
+Briefly describe framework, target, how to do gradient descent…also framework figure
+
+\subsection{Performance Measurement}
+There are several metrics that can be used to measure the performance. According to [], these various metrics may reflect different properties of the algorithm.
+\begin{itemize}
+    \item Similarity:
+    \item CC:
+    \item Depends on what we have!
+\end{itemize}
+The effectiveness of the algorithm can be verified by permutation test. We can choose a small subset. 
+For each figure, we will randomly assign the result of another figure and analyze the metrics mentioned above. This can help prevent bias and make sure the result for each picture is unique.
+
+\subsection{Further Verification}
+For the trained network, we may first disable the attention mechanism or the CNN framework and compare the several metrics with previous results. 
+This step will show their separate contributions and their properties.
+
+The second step is to find out why attention mechanism may help improve the performance. 
+Either during training or test process, upon the output of attention mechanism, we can add noise or use the output of another figure to misguide the CNN network. 
+This step can show whether the final output depends largely on attention mechanism.
+
+I am also thinking about…If the CNN network becomes smaller, maybe the influence of attention will be boosted.
+
+If time permitting, we might also use the Integrated Gradients algorithm (IG) [] to analyze what pixels in the picture contributes to the result. 
+It might be interesting if we can find some pixels that are not highlighted but have help the machine to focus. 
+Besides, since the IG algorithm measures the gradient change from a totally dimmed picture to the original one, we can test the sensitivity of our algorithm.
+
+\section{Work Plan}
+Step1: Before the March 4 checkpoint, we are going to write the code of a traditional CNN network and applies attention mechanism to it. 
+If time permitting, we can try two or three attention mechanisms that are differently defined to see whether there are some differences. 
+This will mainly be done by…
+
+Step2: Before March 25, interpretability analysis will be done on the trained model. Details include cross validation to test both the final output and the influence of attention mechanism. 
+This can be done by…
+
+Step3: Before we submit the final report, we are going to use some other tools to find some other aspects of our model. 
+For example, whether there are some pixels that are not focused but help to achieve the result? How will our model respond to partial or dimmed picture? This can be done by…
+
+\newpage
+
+\bibliographystyle{plain}
+
+\bibliography{reading_assigment1}
+
+
+\end{document}
