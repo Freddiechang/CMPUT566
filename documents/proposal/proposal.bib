@@ -1,0 +1,278 @@
+
+@article{bahdanauNeuralMachineTranslation2016a,
+  title = {Neural {{Machine Translation}} by {{Jointly Learning}} to {{Align}} and {{Translate}}},
+  author = {Bahdanau, Dzmitry and Cho, Kyunghyun and Bengio, Yoshua},
+  year = {2016},
+  month = may,
+  abstract = {Neural machine translation is a recently proposed approach to machine translation. Unlike the traditional statistical machine translation, the neural machine translation aims at building a single neural network that can be jointly tuned to maximize the translation performance. The models proposed recently for neural machine translation often belong to a family of encoder-decoders and consists of an encoder that encodes a source sentence into a fixed-length vector from which a decoder generates a translation. In this paper, we conjecture that the use of a fixed-length vector is a bottleneck in improving the performance of this basic encoder-decoder architecture, and propose to extend this by allowing a model to automatically (soft-)search for parts of a source sentence that are relevant to predicting a target word, without having to form these parts as a hard segment explicitly. With this new approach, we achieve a translation performance comparable to the existing state-of-the-art phrase-based system on the task of English-to-French translation. Furthermore, qualitative analysis reveals that the (soft-)alignments found by the model agree well with our intuition.},
+  archivePrefix = {arXiv},
+  eprint = {1409.0473},
+  eprinttype = {arxiv},
+  journal = {arXiv:1409.0473 [cs, stat]},
+  keywords = {Computer Science - Computation and Language,Computer Science - Machine Learning,Computer Science - Neural and Evolutionary Computing,Statistics - Machine Learning},
+  primaryClass = {cs, stat}
+}
+
+@article{cheHowGazeInfluenced2020,
+  title = {How Is {{Gaze Influenced}} by {{Image Transformations}}? {{Dataset}} and {{Model}}},
+  shorttitle = {How Is {{Gaze Influenced}} by {{Image Transformations}}?},
+  author = {Che, Z. and Borji, A. and Zhai, G. and Min, X. and Guo, G. and Callet, P. Le},
+  year = {2020},
+  volume = {29},
+  pages = {2287--2300},
+  issn = {1941-0042},
+  doi = {10.1109/TIP.2019.2945857},
+  abstract = {Data size is the bottleneck for developing deep saliency models, because collecting eye-movement data is very time-consuming and expensive. Most of current studies on human attention and saliency modeling have used high-quality stereotype stimuli. In real world, however, captured images undergo various types of transformations. Can we use these transformations to augment existing saliency datasets? Here, we first create a novel saliency dataset including fixations of 10 observers over 1900 images degraded by 19 types of transformations. Second, by analyzing eye movements, we find that observers look at different locations over transformed versus original images. Third, we utilize the new data over transformed images, called data augmentation transformation (DAT), to train deep saliency models. We find that label-preserving DATs with negligible impact on human gaze boost saliency prediction, whereas some other DATs that severely impact human gaze degrade the performance. These label-preserving valid augmentation transformations provide a solution to enlarge existing saliency datasets. Finally, we introduce a novel saliency model based on generative adversarial networks (dubbed GazeGAN). A modified U-Net is utilized as the generator of the GazeGAN, which combines classic ``skip connection'' with a novel ``center-surround connection'' (CSC) module. Our proposed CSC module mitigates trivial artifacts while emphasizing semantic salient regions, and increases model nonlinearity, thus demonstrating better robustness against transformations. Extensive experiments and comparisons indicate that GazeGAN achieves state-of-the-art performance over multiple datasets. We also provide a comprehensive comparison of 22 saliency models on various transformed scenes, which contributes a new robustness benchmark to saliency community. Our code and dataset are available at: https://github.com/CZHQuality/Sal-CFS-GAN.},
+  journal = {IEEE Transactions on Image Processing},
+  keywords = {center-surround connection module,DAT,data augmentation,data augmentation transformation,Data models,deep saliency models,eye,eye movements,eye-movement data,feature extraction,gaze tracking,GazeGAN,generative adversarial networks,high-quality stereotype stimuli,human attention,Human gaze,human gaze boost saliency prediction,image capture,Image resolution,image transformations,label-preservation DAT,label-preservation valid augmentation transformations,learning (artificial intelligence),Mathematical model,model robustness,neural nets,object detection,Observers,Robustness,saliency community,saliency modeling,saliency prediction,Semantics,skip connection,transforms,Visualization}
+}
+
+@article{congReviewVisualSaliency2019,
+  title = {Review of {{Visual Saliency Detection}} with {{Comprehensive Information}}},
+  author = {Cong, Runmin and Lei, Jianjun and Fu, Huazhu and Cheng, Ming-Ming and Lin, Weisi and Huang, Qingming},
+  year = {2019},
+  month = oct,
+  volume = {29},
+  pages = {2941--2959},
+  issn = {1051-8215, 1558-2205},
+  doi = {10.1109/TCSVT.2018.2870832},
+  abstract = {Visual saliency detection model simulates the human visual system to perceive the scene, and has been widely used in many vision tasks. With the development of acquisition technology, more comprehensive information, such as depth cue, inter-image correspondence, or temporal relationship, is available to extend image saliency detection to RGBD saliency detection, co-saliency detection, or video saliency detection. RGBD saliency detection model focuses on extracting the salient regions from RGBD images by combining the depth information. Co-saliency detection model introduces the inter-image correspondence constraint to discover the common salient object in an image group. The goal of video saliency detection model is to locate the motion-related salient object in video sequences, which considers the motion cue and spatiotemporal constraint jointly. In this paper, we review different types of saliency detection algorithms, summarize the important issues of the existing methods, and discuss the existent problems and future works. Moreover, the evaluation datasets and quantitative measurements are briefly introduced, and the experimental analysis and discission are conducted to provide a holistic overview of different saliency detection methods.},
+  archivePrefix = {arXiv},
+  eprint = {1803.03391},
+  eprinttype = {arxiv},
+  journal = {IEEE Transactions on Circuits and Systems for Video Technology},
+  keywords = {Computer Science - Computer Vision and Pattern Recognition},
+  language = {en},
+  number = {10}
+}
+
+@article{connorVisualAttentionBottomUp2004,
+  title = {Visual {{Attention}}: {{Bottom}}-{{Up Versus Top}}-{{Down}}},
+  shorttitle = {Visual {{Attention}}},
+  author = {Connor, Charles E. and Egeth, Howard E. and Yantis, Steven},
+  year = {2004},
+  month = oct,
+  volume = {14},
+  pages = {R850-R852},
+  issn = {0960-9822},
+  doi = {10.1016/j.cub.2004.09.041},
+  abstract = {Visual attention is attracted by salient stimuli that `pop out' from their surroundings. Attention can also be voluntarily directed to objects of current importance to the observer. What happens in the brain when these two processes interact?},
+  journal = {Current Biology},
+  language = {en},
+  number = {19}
+}
+
+@article{corniaPredictingHumanEye2018,
+  title = {Predicting {{Human Eye Fixations}} via an {{LSTM}}-{{Based Saliency Attentive Model}}},
+  author = {Cornia, M. and Baraldi, L. and Serra, G. and Cucchiara, R.},
+  year = {2018},
+  month = oct,
+  volume = {27},
+  pages = {5142--5154},
+  issn = {1941-0042},
+  doi = {10.1109/TIP.2018.2851672},
+  abstract = {Data-driven saliency has recently gained a lot of attention thanks to the use of convolutional neural networks for predicting gaze fixations. In this paper, we go beyond standard approaches to saliency prediction, in which gaze maps are computed with a feed-forward network, and present a novel model which can predict accurate saliency maps by incorporating neural attentive mechanisms. The core of our solution is a convolutional long short-term memory that focuses on the most salient regions of the input image to iteratively refine the predicted saliency map. In addition, to tackle the center bias typical of human eye fixations, our model can learn a set of prior maps generated with Gaussian functions. We show, through an extensive evaluation, that the proposed architecture outperforms the current state-of-the-art on public saliency prediction datasets. We further study the contribution of each key component to demonstrate their robustness on different scenarios.},
+  journal = {IEEE Transactions on Image Processing},
+  keywords = {Computational modeling,Computer architecture,convolutional neural networks,data-driven saliency,deep learning,Deep learning,eye,Feature extraction,feed-forward network,Gaussian functions,Gaussian processes,gaze fixations,gaze maps,human eye fixations,LSTM-based saliency,neural attentive mechanisms,neural nets,object detection,Predictive models,prior maps,public saliency prediction datasets,Saliency,saliency maps,short-term memory,standard approaches,Task analysis,Visualization},
+  number = {10}
+}
+
+@article{ittiModelSaliencybasedVisual1998,
+  title = {A Model of Saliency-Based Visual Attention for Rapid Scene Analysis},
+  author = {Itti, L. and Koch, C. and Niebur, E.},
+  year = {1998},
+  month = nov,
+  volume = {20},
+  pages = {1254--1259},
+  issn = {1939-3539},
+  doi = {10.1109/34.730558},
+  abstract = {A visual attention system, inspired by the behavior and the neuronal architecture of the early primate visual system, is presented. Multiscale image features are combined into a single topographical saliency map. A dynamical neural network then selects attended locations in order of decreasing saliency. The system breaks down the complex problem of scene understanding by rapidly selecting, in a computationally efficient manner, conspicuous locations to be analyzed in detail.},
+  journal = {IEEE Transactions on Pattern Analysis and Machine Intelligence},
+  keywords = {Biological system modeling,Brain modeling,Computer architecture,computer vision,dynamical neural network,feature extraction,Feature extraction,Hardware,Image analysis,image recognition,Layout,neural nets,Neural networks,Object detection,rapid scene analysis,saliency,scene understanding,target detection,target tracking,topographical saliency map,visual attention,visual search,Visual system},
+  number = {11}
+}
+
+@article{kruthiventiDeepFixFullyConvolutional2015,
+  title = {{{DeepFix}}: {{A Fully Convolutional Neural Network}} for Predicting {{Human Eye Fixations}}},
+  shorttitle = {{{DeepFix}}},
+  author = {Kruthiventi, Srinivas S. S. and Ayush, Kumar and Babu, R. Venkatesh},
+  year = {2015},
+  month = oct,
+  abstract = {Understanding and predicting the human visual attentional mechanism is an active area of research in the fields of neuroscience and computer vision. In this work, we propose DeepFix, a first-of-its-kind fully convolutional neural network for accurate saliency prediction. Unlike classical works which characterize the saliency map using various hand-crafted features, our model automatically learns features in a hierarchical fashion and predicts saliency map in an end-to-end manner. DeepFix is designed to capture semantics at multiple scales while taking global context into account using network layers with very large receptive fields. Generally, fully convolutional nets are spatially invariant which prevents them from modeling location dependent patterns (e.g. centre-bias). Our network overcomes this limitation by incorporating a novel Location Biased Convolutional layer. We evaluate our model on two challenging eye fixation datasets -- MIT300, CAT2000 and show that it outperforms other recent approaches by a significant margin.},
+  archivePrefix = {arXiv},
+  eprint = {1510.02927},
+  eprinttype = {arxiv},
+  journal = {arXiv:1510.02927 [cs]},
+  keywords = {Computer Science - Computer Vision and Pattern Recognition},
+  primaryClass = {cs}
+}
+
+@article{kummererDeepGazeIIReading2016,
+  title = {{{DeepGaze II}}: {{Reading}} Fixations from Deep Features Trained on Object Recognition},
+  shorttitle = {{{DeepGaze II}}},
+  author = {K{\"u}mmerer, Matthias and Wallis, Thomas S. A. and Bethge, Matthias},
+  year = {2016},
+  month = oct,
+  abstract = {Here we present DeepGaze II, a model that predicts where people look in images. The model uses the features from the VGG-19 deep neural network trained to identify objects in images. Contrary to other saliency models that use deep features, here we use the VGG features for saliency prediction with no additional fine-tuning (rather, a few readout layers are trained on top of the VGG features to predict saliency). The model is therefore a strong test of transfer learning. After conservative cross-validation, DeepGaze II explains about 87\% of the explainable information gain in the patterns of fixations and achieves top performance in area under the curve metrics on the MIT300 hold-out benchmark. These results corroborate the finding from DeepGaze I (which explained 56\% of the explainable information gain), that deep features trained on object recognition provide a versatile feature space for performing related visual tasks. We explore the factors that contribute to this success and present several informative image examples. A web service is available to compute model predictions at http://deepgaze.bethgelab.org.},
+  archivePrefix = {arXiv},
+  eprint = {1610.01563},
+  eprinttype = {arxiv},
+  journal = {arXiv:1610.01563 [cs, q-bio, stat]},
+  keywords = {Computer Science - Computer Vision and Pattern Recognition,Quantitative Biology - Neurons and Cognition,Statistics - Applications},
+  primaryClass = {cs, q-bio, stat}
+}
+
+@article{panSalGANVisualSaliency2018,
+  title = {{{SalGAN}}: {{Visual Saliency Prediction}} with {{Generative Adversarial Networks}}},
+  shorttitle = {{{SalGAN}}},
+  author = {Pan, Junting and Ferrer, Cristian Canton and McGuinness, Kevin and O'Connor, Noel E. and Torres, Jordi and Sayrol, Elisa and {Giro-i-Nieto}, Xavier},
+  year = {2018},
+  month = jul,
+  abstract = {We introduce SalGAN, a deep convolutional neural network for visual saliency prediction trained with adversarial examples. The first stage of the network consists of a generator model whose weights are learned by back-propagation computed from a binary cross entropy (BCE) loss over downsampled versions of the saliency maps. The resulting prediction is processed by a discriminator network trained to solve a binary classification task between the saliency maps generated by the generative stage and the ground truth ones. Our experiments show how adversarial training allows reaching state-of-the-art performance across different metrics when combined with a widely-used loss function like BCE. Our results can be reproduced with the source code and trained models available at https://imatge-upc.github.io/saliency-salgan-2017/.},
+  archivePrefix = {arXiv},
+  eprint = {1701.01081},
+  eprinttype = {arxiv},
+  journal = {arXiv:1701.01081 [cs]},
+  keywords = {Computer Science - Computer Vision and Pattern Recognition},
+  primaryClass = {cs}
+}
+
+@article{petersComponentsBottomupGaze2005,
+  title = {Components of Bottom-up Gaze Allocation in Natural Images},
+  author = {Peters, Robert J. and Iyer, Asha and Itti, Laurent and Koch, Christof},
+  year = {2005},
+  month = aug,
+  volume = {45},
+  pages = {2397--2416},
+  issn = {0042-6989},
+  doi = {10.1016/j.visres.2005.03.019},
+  abstract = {Recent research [Parkhurst, D., Law, K., \& Niebur, E., 2002. Modeling the role of salience in the allocation of overt visual attention. Vision Research 42 (1) (2002) 107\textendash 123] showed that a model of bottom-up visual attention can account in part for the spatial locations fixated by humans while free-viewing complex natural and artificial scenes. That study used a definition of salience based on local detectors with coarse global surround inhibition. Here, we use a similar framework to investigate the roles of several types of non-linear interactions known to exist in visual cortex, and of eccentricity-dependent processing. For each of these, we added a component to the salience model, including richer interactions among orientation-tuned units, both at spatial short range (for clutter reduction) and long range (for contour facilitation), and a detailed model of eccentricity-dependent changes in visual processing. Subjects free-viewed naturalistic and artificial images while their eye movements were recorded, and the resulting fixation locations were compared with the models' predicted salience maps. We found that the proposed interactions indeed play a significant role in the spatiotemporal deployment of attention in natural scenes; about half of the observed inter-subject variance can be explained by these different models. This suggests that attentional guidance does not depend solely on local visual features, but must also include the effects of interactions among features. As models of these interactions become more accurate in predicting behaviorally-relevant salient locations, they become useful to a range of applications in computer vision and human-machine interface design.},
+  journal = {Vision Research},
+  keywords = {Attention,Contours,Eye movements,Salience},
+  language = {en},
+  number = {18}
+}
+
+@article{PhotoreceptorCell2021,
+  title = {Photoreceptor Cell},
+  year = {2021},
+  month = jan,
+  abstract = {A photoreceptor cell is a specialized type of neuroepithelial cell  found in the retina that is capable of visual phototransduction. The great biological importance of photoreceptors is that they convert light (visible electromagnetic radiation) into signals that can stimulate biological processes. To be more specific, photoreceptor proteins in the cell absorb photons, triggering a change in the cell's membrane potential. There are currently three known types of photoreceptor cells in mammalian eyes: rods, cones, and intrinsically photosensitive retinal ganglion cells. The two classic photoreceptor cells are rods and cones, each contributing information used by the visual system to form a representation of the visual world, sight. Rods primarily contribute to night-time vision (scotopic conditions) whereas cones primarily contribute to day-time vision (photopic conditions), but the chemical process in each that supports phototransduction is similar. A third class of mammalian photoreceptor cell was discovered during the 1990s: the intrinsically photosensitive retinal ganglion cells. These cells are thought not contribute to sight directly, but have a role in the entrainment of the circadian rhythm and pupillary reflex. There are major functional differences between the rods and cones. Rods are extremely sensitive, and can be triggered by a single photon. At very low light levels, visual experience is based solely on the rod signal. Cones require significantly brighter light (that is, a larger number of photons) to produce a signal. In humans, there are three different types of cone cell, distinguished by their pattern of response to light of different wavelengths. Color experience is calculated from these three distinct signals, perhaps via an opponent process. This explains why colors cannot be seen at low light levels, when only the rod and not the cone photoreceptor cells are active. The three types of cone cell respond (roughly) to light of short, medium, and long wavelengths, so they may respectively be referred to as S-cones, M-cones, and L-cones.  In accordance with the principle of univariance, the firing of the cell depends upon only the number of photons absorbed. The different responses of the three types of cone cells are determined by the likelihoods that their respective photoreceptor proteins will absorb photons of different wavelengths. So, for example, an L cone cell contains a photoreceptor protein that more readily absorbs long wavelengths of light (that is, more "red"). Light of a shorter wavelength can also produce the same response from an L cone cell, but it must be much brighter to do so. The human retina contains about 120 million rod cells, and 6 million cone cells. The number and ratio of rods to cones varies among species, dependent on whether an animal is primarily diurnal or nocturnal. Certain owls, such as the nocturnal tawny owl, have a tremendous number of rods in their retinae. In the human visual system, in addition to the photosensitive rods \& cones, there are about 2.4 million to 3 million ganglion cells, with 1 to 2\% of them being photosensitive. The axons of ganglion cells form the two optic nerves. Photoreceptor cells are typically arranged in an irregular but approximately hexagonal grid, known as the retinal mosaic. The pineal and parapineal glands are photoreceptive in non-mammalian vertebrates, but not in mammals. Birds have  photoactive cerebrospinal fluid (CSF)-contacting neurons within the paraventricular organ that respond to light in the absence of input from the eyes or neurotransmitters. Invertebrate photoreceptors in organisms such as insects and molluscs are different in both their morphological organization and their underlying biochemical pathways. This article describes human photoreceptors.},
+  annotation = {Page Version ID: 1001571619},
+  copyright = {Creative Commons Attribution-ShareAlike License},
+  journal = {Wikipedia},
+  language = {en}
+}
+
+@inproceedings{richeSaliencyHumanFixations2013,
+  title = {Saliency and {{Human Fixations}}: {{State}}-of-the-{{Art}} and {{Study}} of {{Comparison Metrics}}},
+  shorttitle = {Saliency and {{Human Fixations}}},
+  booktitle = {2013 {{IEEE International Conference}} on {{Computer Vision}}},
+  author = {Riche, N. and Duvinage, M. and Mancas, M. and Gosselin, B. and Dutoit, T.},
+  year = {2013},
+  month = dec,
+  pages = {1153--1160},
+  issn = {2380-7504},
+  doi = {10.1109/ICCV.2013.147},
+  abstract = {Visual saliency has been an increasingly active research area in the last ten years with dozens of saliency models recently published. Nowadays, one of the big challenges in the field is to find a way to fairly evaluate all of these models. In this paper, on human eye fixations, we compare the ranking of 12 state-of-the art saliency models using 12 similarity metrics. The comparison is done on Jian Li's database containing several hundreds of natural images. Based on Kendall concordance coefficient, it is shown that some of the metrics are strongly correlated leading to a redundancy in the performance metrics reported in the available benchmarks. On the other hand, other metrics provide a more diverse picture of models' overall performance. As a recommendation, three similarity metrics should be used to obtain a complete point of view of saliency model performance.},
+  keywords = {Benchmark testing,Computational modeling,computer vision,Correlation,Databases,eye,gaze tracking,human eye fixation,Human eye fixations,Jian Li's database,Kendall concordance coefficient,Measurement,Metrics,natural images,Saliency maps,Taxonomy,Validation,visual saliency model,Visualization}
+}
+
+@article{sullivanOverviewHighEfficiency2012,
+  title = {Overview of the {{High Efficiency Video Coding}} ({{HEVC}}) {{Standard}}},
+  author = {Sullivan, G. J. and Ohm, J. and Han, W. and Wiegand, T.},
+  year = {2012},
+  month = dec,
+  volume = {22},
+  pages = {1649--1668},
+  issn = {1558-2205},
+  doi = {10.1109/TCSVT.2012.2221191},
+  abstract = {High Efficiency Video Coding (HEVC) is currently being prepared as the newest video coding standard of the ITU-T Video Coding Experts Group and the ISO/IEC Moving Picture Experts Group. The main goal of the HEVC standardization effort is to enable significantly improved compression performance relative to existing standards-in the range of 50\% bit-rate reduction for equal perceptual video quality. This paper provides an overview of the technical features and characteristics of the HEVC standard.},
+  journal = {IEEE Transactions on Circuits and Systems for Video Technology},
+  keywords = {Advanced video coding (AVC),bit-rate reduction,compression performance improvement,equal perceptual video quality,H.264,HEVC standardization effort,High Efficiency Video Coding (HEVC),high efficiency video coding standard,ISO standards,ISO-IEC Moving Picture Experts Group,ITU-T Video Coding Experts Group,Joint Collaborative Team on Video Coding (JCT-VC),Moving Picture Experts Group (MPEG),MPEG 4 Standard,MPEG standards,MPEG-4,standards,technical features,video coding,Video coding,Video Coding Experts Group (VCEG),video compression,Video compression},
+  number = {12}
+}
+
+@article{vaswaniAttentionAllYou2017a,
+  title = {Attention {{Is All You Need}}},
+  author = {Vaswani, Ashish and Shazeer, Noam and Parmar, Niki and Uszkoreit, Jakob and Jones, Llion and Gomez, Aidan N. and Kaiser, Lukasz and Polosukhin, Illia},
+  year = {2017},
+  month = dec,
+  abstract = {The dominant sequence transduction models are based on complex recurrent or convolutional neural networks in an encoder-decoder configuration. The best performing models also connect the encoder and decoder through an attention mechanism. We propose a new simple network architecture, the Transformer, based solely on attention mechanisms, dispensing with recurrence and convolutions entirely. Experiments on two machine translation tasks show these models to be superior in quality while being more parallelizable and requiring significantly less time to train. Our model achieves 28.4 BLEU on the WMT 2014 English-to-German translation task, improving over the existing best results, including ensembles by over 2 BLEU. On the WMT 2014 English-to-French translation task, our model establishes a new single-model state-of-the-art BLEU score of 41.8 after training for 3.5 days on eight GPUs, a small fraction of the training costs of the best models from the literature. We show that the Transformer generalizes well to other tasks by applying it successfully to English constituency parsing both with large and limited training data.},
+  archivePrefix = {arXiv},
+  eprint = {1706.03762},
+  eprinttype = {arxiv},
+  journal = {arXiv:1706.03762 [cs]},
+  keywords = {Computer Science - Computation and Language,Computer Science - Machine Learning},
+  primaryClass = {cs}
+}
+
+@inproceedings{vigLargeScaleOptimizationHierarchical2014,
+  title = {Large-{{Scale Optimization}} of {{Hierarchical Features}} for {{Saliency Prediction}} in {{Natural Images}}},
+  booktitle = {2014 {{IEEE Conference}} on {{Computer Vision}} and {{Pattern Recognition}}},
+  author = {Vig, E. and Dorr, M. and Cox, D.},
+  year = {2014},
+  month = jun,
+  pages = {2798--2805},
+  issn = {1063-6919},
+  doi = {10.1109/CVPR.2014.358},
+  abstract = {Saliency prediction typically relies on hand-crafted (multiscale) features that are combined in different ways to form a "master" saliency map, which encodes local image conspicuity. Recent improvements to the state of the art on standard benchmarks such as MIT1003 have been achieved mostly by incrementally adding more and more hand-tuned features (such as car or face detectors) to existing models. In contrast, we here follow an entirely automatic data-driven approach that performs a large-scale search for optimal features. We identify those instances of a richly-parameterized bio-inspired model family (hierarchical neuromorphic networks) that successfully predict image saliency. Because of the high dimensionality of this parameter space, we use automated hyperparameter optimization to efficiently guide the search. The optimal blend of such multilayer features combined with a simple linear classifier achieves excellent performance on several image saliency benchmarks. Our models outperform the state of the art on MIT1003, on which features and classifiers are learned. Without additional training, these models generalize well to two other image saliency data sets, Toronto and NUSEF, despite their different image content. Finally, our algorithm scores best of all the 23 models evaluated to date on the MIT300 saliency challenge, which uses a hidden test set to facilitate an unbiased comparison.},
+  keywords = {automated hyperparameter optimization,automatic data-driven approach,Benchmark testing,bio-inspired materials,Biological system modeling,Computational modeling,deep learning,feature extraction,hand-crafted features,hand-tuned features,hierarchical features,hyperparameter optimization,image classification,Image color analysis,image content,image saliency data sets,large-scale optimization,linear classifier,local image conspicuity encoding,master saliency map,MIT1003,multilayer features,natural images,NUSEF,optimal features,optimisation,Optimization,parameter space,Predictive models,richly-parameterized bio-inspired model,saliency,saliency prediction,standard benchmarks,Toronto,Visualization}
+}
+
+@article{zhangSelfAttentionGenerativeAdversarial2019a,
+  title = {Self-{{Attention Generative Adversarial Networks}}},
+  author = {Zhang, Han and Goodfellow, Ian and Metaxas, Dimitris and Odena, Augustus},
+  year = {2019},
+  month = jun,
+  abstract = {In this paper, we propose the Self-Attention Generative Adversarial Network (SAGAN) which allows attention-driven, long-range dependency modeling for image generation tasks. Traditional convolutional GANs generate high-resolution details as a function of only spatially local points in lower-resolution feature maps. In SAGAN, details can be generated using cues from all feature locations. Moreover, the discriminator can check that highly detailed features in distant portions of the image are consistent with each other. Furthermore, recent work has shown that generator conditioning affects GAN performance. Leveraging this insight, we apply spectral normalization to the GAN generator and find that this improves training dynamics. The proposed SAGAN achieves the state-of-the-art results, boosting the best published Inception score from 36.8 to 52.52 and reducing Frechet Inception distance from 27.62 to 18.65 on the challenging ImageNet dataset. Visualization of the attention layers shows that the generator leverages neighborhoods that correspond to object shapes rather than local regions of fixed shape.},
+  archivePrefix = {arXiv},
+  eprint = {1805.08318},
+  eprinttype = {arxiv},
+  journal = {arXiv:1805.08318 [cs, stat]},
+  keywords = {Computer Science - Machine Learning,Statistics - Machine Learning},
+  primaryClass = {cs, stat}
+}
+
+@misc{gazzaniga2006cognitive,
+  title={Cognitive Neuroscience. The biology of the mind,(2014)},
+  author={Gazzaniga, Michael S and Ivry, Richard B and Mangun, GR},
+  year={2006},
+  publisher={Norton: New York}
+}
+@inproceedings{sundararajan2017axiomatic,
+  title={Axiomatic attribution for deep networks},
+  author={Sundararajan, Mukund and Taly, Ankur and Yan, Qiqi},
+  booktitle={International Conference on Machine Learning},
+  pages={3319--3328},
+  year={2017},
+  organization={PMLR}
+}
+@inproceedings{riche2013saliency,
+  title={Saliency and human fixations: State-of-the-art and study of comparison metrics},
+  author={Riche, Nicolas and Duvinage, Matthieu and Mancas, Matei and Gosselin, Bernard and Dutoit, Thierry},
+  booktitle={Proceedings of the IEEE international conference on computer vision},
+  pages={1153--1160},
+  year={2013}
+}
+
+@article{judd2012benchmark,
+  title={A benchmark of computational models of saliency to predict human fixations},
+  author={Judd, Tilke and Durand, Fr{\'e}do and Torralba, Antonio},
+  year={2012}
+}
+
+@article{borji2015cat2000,
+  title={Cat2000: A large scale fixation dataset for boosting saliency research},
+  author={Borji, Ali and Itti, Laurent},
+  journal={arXiv preprint arXiv:1505.03581},
+  year={2015}
+}
+
+@InProceedings{jiang2015salicon,
+author = {Jiang, Ming and Huang, Shengsheng and Duan, Juanyong and Zhao, Qi},
+title = {SALICON: Saliency in Context},
+booktitle = {The IEEE Conference on Computer Vision and Pattern Recognition (CVPR)},
+month = {June},
+year = {2015}
+}
