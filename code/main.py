@@ -6,7 +6,11 @@ import pytorch_lightning as pl
 
 from model.LitAutoEncoder import LitAutoEncoder
 
-from options import args
+from options import parser
+
+# add model specific args
+parser = LitAutoEncoder.add_model_specific_args(parser)
+args = parser.parse_args()
 
 dataset = MNIST(os.getcwd(), download=True, transform=transforms.ToTensor())
 train_loader = DataLoader(dataset)

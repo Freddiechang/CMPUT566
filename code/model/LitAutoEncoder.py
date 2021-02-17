@@ -18,6 +18,13 @@ class LitAutoEncoder(pl.LightningModule):
             nn.Linear(64, 28*28)
         )
 
+    @staticmethod
+    def add_model_specific_args(parent_parser):
+        parser = ArgumentParser(parents=[parent_parser], add_help=False)
+        parser.add_argument('--encoder_layers', type=int, default=12)
+        parser.add_argument('--data_path', type=str, default='/some/path')
+        return parser
+
     def forward(self, x):
         # in lightning, forward defines the prediction/inference actions
         embedding = self.encoder(x)
