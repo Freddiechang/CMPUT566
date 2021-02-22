@@ -13,8 +13,8 @@ class SALICON(Dataset):
     def __init__(self, args, mode="train"):
         self.resize = args.resize
         self.normalize = args.normalize
-        self.norm_mean = [0.5, 0.5, 0.5]
-        self.norm_std = [1, 1, 1]
+        self.norm_mean = [float(i) for i in args.norm_mean.split('+')]
+        self.norm_std = [float(i) for i in args.norm_std.split('+')]
         data_root = args.data_root
 
         # transform for image and annotation/fixation map, respectively
