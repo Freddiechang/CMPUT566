@@ -2,7 +2,7 @@ from os import listdir
 from os.path import isfile, join, isdir
 
 import numpy as np
-from torch.utils.data import Dataset, random_split
+from torch.utils.data import Dataset, DataLoader, random_split
 from torchvision import transforms
 from PIL import Image
 from pytorch_lightning.core.datamodule import LightningDataModule
