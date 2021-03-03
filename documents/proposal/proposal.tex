@@ -132,12 +132,13 @@ the test set is released without fixation maps and saliency maps.
 
 \subsection{Interpretability}
 
-Since this task is a regression task rather than a classification task, the output heatmaps can partly explain themselves. 
-However, since we are doing analysis on existing CNN framework and use “attention” mechanism as a part of our framework, we should carefully analyze the contribution of these two components. 
-Besides comparing the result with their separate performance, we would also disable or disturb the attention mechanism on the trained model to infer their separate roles and cooperation in this task.
+The visual saliency algorithm takes an input of the original figure, and outputs a saliency map of the same size. Each pixel contains a float number from 0 to 1. Bigger numbers show that these pixels or areas get more focus. Therefore, it is a regression task and the output can be visualized by plotting the saliency map.
+However, we are still interested in what information in the picture is used by the algorithm to calculate the output. Some pixels, like sharp margins, may help locate the focused area, but may not be themselves focused.
+Therefore, gradients methods \cite{sundararajan2017axiomatic} will be used to determine which pixels have the most contribution to determine the focused areas.
 
-Since the heatmaps usually have smoothed margin, when we are doing cross validation or creating random maps to verify our results, it is not appropriate to simple assign random values to create a fake heatmap. 
-The random maps that will be used for comparison should also resemble the distribution of heatmaps in the data set.
+Moreover, we are doing analysis on existing CNN framework and use attention mechanism as a part of our framework. Since we previously have the assumption that convolution layers are good at processing local and abstract information while attention mechanism uses global information to help improve the performance, we should carefully analyze the contributions of these two components. 
+
+Besides comparing the result with their separate performance, we would also disable or disturb the attention mechanism (creating random heat maps with similar distributions) on the trained model to infer their separate roles and cooperation in this task.
 
 \section{Analysis}
 \subsection{Algorithm}
