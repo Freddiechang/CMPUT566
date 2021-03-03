@@ -5,12 +5,12 @@
   year = {2016},
   month = may,
   abstract = {Neural machine translation is a recently proposed approach to machine translation. Unlike the traditional statistical machine translation, the neural machine translation aims at building a single neural network that can be jointly tuned to maximize the translation performance. The models proposed recently for neural machine translation often belong to a family of encoder-decoders and consists of an encoder that encodes a source sentence into a fixed-length vector from which a decoder generates a translation. In this paper, we conjecture that the use of a fixed-length vector is a bottleneck in improving the performance of this basic encoder-decoder architecture, and propose to extend this by allowing a model to automatically (soft-)search for parts of a source sentence that are relevant to predicting a target word, without having to form these parts as a hard segment explicitly. With this new approach, we achieve a translation performance comparable to the existing state-of-the-art phrase-based system on the task of English-to-French translation. Furthermore, qualitative analysis reveals that the (soft-)alignments found by the model agree well with our intuition.},
-  archivePrefix = {arXiv},
+  archiveprefix = {arXiv},
   eprint = {1409.0473},
   eprinttype = {arxiv},
   journal = {arXiv:1409.0473 [cs, stat]},
   keywords = {Computer Science - Computation and Language,Computer Science - Machine Learning,Computer Science - Neural and Evolutionary Computing,Statistics - Machine Learning},
-  primaryClass = {cs, stat}
+  primaryclass = {cs, stat}
 }
 
 @article{cheHowGazeInfluenced2020,
@@ -37,7 +37,7 @@
   issn = {1051-8215, 1558-2205},
   doi = {10.1109/TCSVT.2018.2870832},
   abstract = {Visual saliency detection model simulates the human visual system to perceive the scene, and has been widely used in many vision tasks. With the development of acquisition technology, more comprehensive information, such as depth cue, inter-image correspondence, or temporal relationship, is available to extend image saliency detection to RGBD saliency detection, co-saliency detection, or video saliency detection. RGBD saliency detection model focuses on extracting the salient regions from RGBD images by combining the depth information. Co-saliency detection model introduces the inter-image correspondence constraint to discover the common salient object in an image group. The goal of video saliency detection model is to locate the motion-related salient object in video sequences, which considers the motion cue and spatiotemporal constraint jointly. In this paper, we review different types of saliency detection algorithms, summarize the important issues of the existing methods, and discuss the existent problems and future works. Moreover, the evaluation datasets and quantitative measurements are briefly introduced, and the experimental analysis and discission are conducted to provide a holistic overview of different saliency detection methods.},
-  archivePrefix = {arXiv},
+  archiveprefix = {arXiv},
   eprint = {1803.03391},
   eprinttype = {arxiv},
   journal = {IEEE Transactions on Circuits and Systems for Video Technology},
@@ -77,6 +77,21 @@
   number = {10}
 }
 
+@article{hanleyMeaningUseArea1982,
+  title = {The Meaning and Use of the Area under a Receiver Operating Characteristic ({{ROC}}) Curve.},
+  author = {Hanley, J A and McNeil, B J},
+  year = {1982},
+  month = apr,
+  volume = {143},
+  pages = {29--36},
+  issn = {0033-8419, 1527-1315},
+  doi = {10.1148/radiology.143.1.7063747},
+  file = {/Users/freddie/onedrive/Sync/Zotero/storage/NYJMLNRI/Hanley and McNeil - 1982 - The meaning and use of the area under a receiver o.pdf},
+  journal = {Radiology},
+  language = {en},
+  number = {1}
+}
+
 @article{ittiModelSaliencybasedVisual1998,
   title = {A Model of Saliency-Based Visual Attention for Rapid Scene Analysis},
   author = {Itti, L. and Koch, C. and Niebur, E.},
@@ -99,12 +114,12 @@
   year = {2015},
   month = oct,
   abstract = {Understanding and predicting the human visual attentional mechanism is an active area of research in the fields of neuroscience and computer vision. In this work, we propose DeepFix, a first-of-its-kind fully convolutional neural network for accurate saliency prediction. Unlike classical works which characterize the saliency map using various hand-crafted features, our model automatically learns features in a hierarchical fashion and predicts saliency map in an end-to-end manner. DeepFix is designed to capture semantics at multiple scales while taking global context into account using network layers with very large receptive fields. Generally, fully convolutional nets are spatially invariant which prevents them from modeling location dependent patterns (e.g. centre-bias). Our network overcomes this limitation by incorporating a novel Location Biased Convolutional layer. We evaluate our model on two challenging eye fixation datasets -- MIT300, CAT2000 and show that it outperforms other recent approaches by a significant margin.},
-  archivePrefix = {arXiv},
+  archiveprefix = {arXiv},
   eprint = {1510.02927},
   eprinttype = {arxiv},
   journal = {arXiv:1510.02927 [cs]},
   keywords = {Computer Science - Computer Vision and Pattern Recognition},
-  primaryClass = {cs}
+  primaryclass = {cs}
 }
 
 @article{kummererDeepGazeIIReading2016,
@@ -114,12 +129,27 @@
   year = {2016},
   month = oct,
   abstract = {Here we present DeepGaze II, a model that predicts where people look in images. The model uses the features from the VGG-19 deep neural network trained to identify objects in images. Contrary to other saliency models that use deep features, here we use the VGG features for saliency prediction with no additional fine-tuning (rather, a few readout layers are trained on top of the VGG features to predict saliency). The model is therefore a strong test of transfer learning. After conservative cross-validation, DeepGaze II explains about 87\% of the explainable information gain in the patterns of fixations and achieves top performance in area under the curve metrics on the MIT300 hold-out benchmark. These results corroborate the finding from DeepGaze I (which explained 56\% of the explainable information gain), that deep features trained on object recognition provide a versatile feature space for performing related visual tasks. We explore the factors that contribute to this success and present several informative image examples. A web service is available to compute model predictions at http://deepgaze.bethgelab.org.},
-  archivePrefix = {arXiv},
+  archiveprefix = {arXiv},
   eprint = {1610.01563},
   eprinttype = {arxiv},
   journal = {arXiv:1610.01563 [cs, q-bio, stat]},
   keywords = {Computer Science - Computer Vision and Pattern Recognition,Quantitative Biology - Neurons and Cognition,Statistics - Applications},
-  primaryClass = {cs, q-bio, stat}
+  primaryclass = {cs, q-bio, stat}
+}
+
+@article{linMicrosoftCOCOCommon2015,
+  title = {Microsoft {{COCO}}: {{Common Objects}} in {{Context}}},
+  shorttitle = {Microsoft {{COCO}}},
+  author = {Lin, Tsung-Yi and Maire, Michael and Belongie, Serge and Bourdev, Lubomir and Girshick, Ross and Hays, James and Perona, Pietro and Ramanan, Deva and Zitnick, C. Lawrence and Doll{\'a}r, Piotr},
+  year = {2015},
+  month = feb,
+  abstract = {We present a new dataset with the goal of advancing the state-of-the-art in object recognition by placing the question of object recognition in the context of the broader question of scene understanding. This is achieved by gathering images of complex everyday scenes containing common objects in their natural context. Objects are labeled using per-instance segmentations to aid in precise object localization. Our dataset contains photos of 91 objects types that would be easily recognizable by a 4 year old. With a total of 2.5 million labeled instances in 328k images, the creation of our dataset drew upon extensive crowd worker involvement via novel user interfaces for category detection, instance spotting and instance segmentation. We present a detailed statistical analysis of the dataset in comparison to PASCAL, ImageNet, and SUN. Finally, we provide baseline performance analysis for bounding box and segmentation detection results using a Deformable Parts Model.},
+  archiveprefix = {arXiv},
+  eprint = {1405.0312},
+  eprinttype = {arxiv},
+  journal = {arXiv:1405.0312 [cs]},
+  keywords = {Computer Science - Computer Vision and Pattern Recognition},
+  primaryclass = {cs}
 }
 
 @article{panSalGANVisualSaliency2018,
@@ -129,12 +159,12 @@
   year = {2018},
   month = jul,
   abstract = {We introduce SalGAN, a deep convolutional neural network for visual saliency prediction trained with adversarial examples. The first stage of the network consists of a generator model whose weights are learned by back-propagation computed from a binary cross entropy (BCE) loss over downsampled versions of the saliency maps. The resulting prediction is processed by a discriminator network trained to solve a binary classification task between the saliency maps generated by the generative stage and the ground truth ones. Our experiments show how adversarial training allows reaching state-of-the-art performance across different metrics when combined with a widely-used loss function like BCE. Our results can be reproduced with the source code and trained models available at https://imatge-upc.github.io/saliency-salgan-2017/.},
-  archivePrefix = {arXiv},
+  archiveprefix = {arXiv},
   eprint = {1701.01081},
   eprinttype = {arxiv},
   journal = {arXiv:1701.01081 [cs]},
   keywords = {Computer Science - Computer Vision and Pattern Recognition},
-  primaryClass = {cs}
+  primaryclass = {cs}
 }
 
 @article{petersComponentsBottomupGaze2005,
@@ -199,12 +229,12 @@
   year = {2017},
   month = dec,
   abstract = {The dominant sequence transduction models are based on complex recurrent or convolutional neural networks in an encoder-decoder configuration. The best performing models also connect the encoder and decoder through an attention mechanism. We propose a new simple network architecture, the Transformer, based solely on attention mechanisms, dispensing with recurrence and convolutions entirely. Experiments on two machine translation tasks show these models to be superior in quality while being more parallelizable and requiring significantly less time to train. Our model achieves 28.4 BLEU on the WMT 2014 English-to-German translation task, improving over the existing best results, including ensembles by over 2 BLEU. On the WMT 2014 English-to-French translation task, our model establishes a new single-model state-of-the-art BLEU score of 41.8 after training for 3.5 days on eight GPUs, a small fraction of the training costs of the best models from the literature. We show that the Transformer generalizes well to other tasks by applying it successfully to English constituency parsing both with large and limited training data.},
-  archivePrefix = {arXiv},
+  archiveprefix = {arXiv},
   eprint = {1706.03762},
   eprinttype = {arxiv},
   journal = {arXiv:1706.03762 [cs]},
   keywords = {Computer Science - Computation and Language,Computer Science - Machine Learning},
-  primaryClass = {cs}
+  primaryclass = {cs}
 }
 
 @inproceedings{vigLargeScaleOptimizationHierarchical2014,
@@ -226,13 +256,14 @@
   year = {2019},
   month = jun,
   abstract = {In this paper, we propose the Self-Attention Generative Adversarial Network (SAGAN) which allows attention-driven, long-range dependency modeling for image generation tasks. Traditional convolutional GANs generate high-resolution details as a function of only spatially local points in lower-resolution feature maps. In SAGAN, details can be generated using cues from all feature locations. Moreover, the discriminator can check that highly detailed features in distant portions of the image are consistent with each other. Furthermore, recent work has shown that generator conditioning affects GAN performance. Leveraging this insight, we apply spectral normalization to the GAN generator and find that this improves training dynamics. The proposed SAGAN achieves the state-of-the-art results, boosting the best published Inception score from 36.8 to 52.52 and reducing Frechet Inception distance from 27.62 to 18.65 on the challenging ImageNet dataset. Visualization of the attention layers shows that the generator leverages neighborhoods that correspond to object shapes rather than local regions of fixed shape.},
-  archivePrefix = {arXiv},
+  archiveprefix = {arXiv},
   eprint = {1805.08318},
   eprinttype = {arxiv},
   journal = {arXiv:1805.08318 [cs, stat]},
   keywords = {Computer Science - Machine Learning,Statistics - Machine Learning},
-  primaryClass = {cs, stat}
+  primaryclass = {cs, stat}
 }
+
 
 @misc{gazzaniga2006cognitive,
   title={Cognitive Neuroscience. The biology of the mind,(2014)},
