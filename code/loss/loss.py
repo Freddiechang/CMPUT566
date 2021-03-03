@@ -3,15 +3,15 @@ import torch
 def nss(prediction, ground_truth):
         """
         Compute NSS score.
-            :param ground_truth : ground-truth fixation points(binary map)  3D tensor: (batch, h, w)
-            :param prediction : predicted saliency map, 3D tensor: (batch, h, w)
+            :param ground_truth : ground-truth fixation points(binary map)  4D tensor: (batch, 1, h, w)
+            :param prediction : predicted saliency map, 4D tensor: (batch, 1, h, w)
             :return score: NSS score: tensor of (batch)
         """
-        sal_map = prediction - prediction.mean(dim=(1, 2)).view(prediction.shape[0], 1, 1)
-        sal_map = sal_map / prediction.std(dim=(1, 2), unbiased=True).view(prediction.shape[0], 1, 1)
+        sal_map = prediction - prediction.mean(dim=(2, 3)).view(prediction.shape[0], 1, 1)
+        sal_map = sal_map / prediction.std(dim=(2, 3), unbiased=True).view(prediction.shape[0], 1, 1)
         sal_map = sal_map * (ground_truth > 0)
-
-        return sal_map.sum(dim=(1, 2)) / ground_truth.count_nonzero(dim=(1, 2))
+        loss = sal_map.sum(dim=(2, 3)) / ground_truth.count_nonzero(dim=(2, 3))
+        return loss.sum()
 
 def vcorrcoef(x, y):
     """
@@ -28,14 +28,15 @@ def vcorrcoef(x, y):
 def cc(prediction, ground_truth):
     """
     Compute CC score.
-        :param prediction : predicted saliency map, 3D tensor: (batch, h, w)
-        :param ground_truth : ground-truth saliency map, 3D tensor: (batch, h, w)
+        :param prediction : predicted saliency map, 4D tensor: (batch, 1, h, w)
+        :param ground_truth : ground-truth saliency map, 4D tensor: (batch, 1, h, w)
         :return score: CC score, tensor: (batch)
     """
-    sal_map = prediction - prediction.mean(dim=(1, 2)).view(prediction.shape[0], 1, 1)
-    sal_map = sal_map / prediction.std(dim=(1, 2), unbiased=True).view(prediction.shape[0], 1, 1)
+    sal_map = prediction - prediction.mean(dim=(2, 3)).view(prediction.shape[0], 1, 1)
+    sal_map = sal_map / prediction.std(dim=(2, 3), unbiased=True).view(prediction.shape[0], 1, 1)
 
-    fix_map = ground_truth - ground_truth.mean(dim=(1, 2)).view(ground_truth.shape[0], 1, 1)
-    fix_map = fix_map / ground_truth.std(dim=(1, 2), unbiased=True).view(ground_truth.shape[0], 1, 1)
+    fix_map = ground_truth - ground_truth.mean(dim=(2, 3)).view(ground_truth.shape[0], 1, 1)
+    fix_map = fix_map / ground_truth.std(dim=(2, 3), unbiased=True).view(ground_truth.shape[0], 1, 1)
 
-    return vcorrcoef(sal_map.view(sal_map.shape[0], -1), fix_map.view(fix_map.shape[0], -1))
+    loss = vcorrcoef(sal_map.view(sal_map.shape[0], -1), fix_map.view(fix_map.shape[0], -1))
+    return loss.sum()
