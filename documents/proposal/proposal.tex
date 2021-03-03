@@ -125,9 +125,20 @@ set, and the test set is released with only the original images.
 The SALICON dataset is created using images from Microsoft Common Objects in Context (MS COCO) dataset\cite{linMicrosoftCOCOCommon2015}.
 Instead of using a eye-tracker, mouse trajectories from different viewers are used in this dataset 
 to calculate probability distribution of visual attention. A total of 20000 images from 80 categories, including
-10000 images in training set, 5000 images in validation set, and 5000 images in test set.
+10000 in training set, 5000 in validation set, and 5000 in test set.
 In training set, the original images, fixation maps, and saliency maps are all available, while 
 the test set is released without fixation maps and saliency maps.
+
+
+We plan to combine the training and validation set of SALICON, 
+and split it into 10 folds(7 for training, 2 for validation, and 1 for testing). 
+Our training data is
+\begin{itemize}
+    \item 7 folds from SALICON
+    \item training set of CAT2000.
+\end{itemize}
+Our validation data for tuning the hyper-parameters is the other 2 folds from SALICON, 
+and our testing data consists the remaining 1 fold from SALICON together with MIT1003.
 
 
 \subsection{Interpretability}
@@ -161,7 +172,17 @@ There are several metrics that can be used to measure the performance. According
     \item Area Under ROC (AUC \cite{richeSaliencyHumanFixations2013})
     \item etc.
 \end{itemize}
-The effectiveness of the algorithm can be verified by permutation test. We can choose a small subset and for each figure, we will randomly assign the result of another figure and analyze the metrics mentioned above. This can help prevent bias and make sure the result for each picture is unique.
+
+The NSS measures the mean saliency value at fixated locations of the normalized (zero mean, unit variance) saliency map. 
+It can be calculated using Eq. .
+\begin{equation}
+    NSS = S
+    \label{EQ:NSS}
+\end{equation}
+
+The performance is reported on the testing fold of SALICON and also the whole MIT1003 dataset.
+Reporting scores using different datasets can make the results more convincing,
+because it can show that our model can generalize well.
 
 \subsection{Further Verification}
 
