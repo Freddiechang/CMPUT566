@@ -145,11 +145,11 @@ and our testing data consists the remaining 1 fold from SALICON together with MI
 
 The visual saliency algorithm takes an input of the original figure, and outputs a saliency map of the same size. Each pixel contains a float number from 0 to 1. Bigger numbers show that these pixels or areas get more focus. Therefore, it is a regression task and the output can be visualized by plotting the saliency map.
 However, we are still interested in what information in the picture is used by the algorithm to calculate the output. Some pixels, like sharp margins, may help locate the focused area, but may not be themselves focused.
-Therefore, gradients methods \cite{sundararajan2017axiomatic} will be used to determine which pixels have the most contribution to determine the focused areas.
+Therefore, gradients methods \cite{sundararajan2017axiomatic} can be used to determine which pixels have the most contribution to determine the focused areas.
 
-Moreover, we are doing analysis on existing CNN framework and use attention mechanism as a part of our framework. Since we previously have the assumption that convolution layers are good at processing local and abstract information while attention mechanism uses global information to help improve the performance, we should carefully analyze the contributions of these two components. 
-
-Besides comparing the result with their separate performance, we would also disable or disturb the attention mechanism (creating random heat maps with similar distributions) on the trained model to infer their separate roles and cooperation in this task.
+Moreover, we are doing analysis on existing CNN framework and use attention mechanism as a part of our framework. Since we previously have the assumption that convolution layers are good at processing local and abstract information while attention mechanism uses global information to help improve the performance, we should carefully analyze the contributions of these two components. In the network, attention mechanisms will act as special layers that are inserted into the neural network and assign different weights to their inputs.
+The first method is to disable the attention layers and see whether the performance becomes significantly worse. If it does, we will know that the inserted layers help improve the performance.
+The second method is to disturb the attention layers, namely by creating random heat maps with similar distributions to misguide the network. If the result gets worse, we will know that the output depends much on these layers.
 
 \section{Analysis}
 \subsection{Algorithm}
@@ -161,7 +161,7 @@ Some datasets might not have heatmap groundtruth available, and different datase
 So we might need to generate heatmaps using a set of uniformed parameters from fixation data.
 The training process will be similar to that in most computer vision tasks. Input data is feeded to the model,
 and the output is compared with groundtruth to compute loss. Loss is then backpropagated to update model parameters.
-Since real test set of these data sets are not public, we will divide the original data set into the train set and the test set. We can use cross validation to choose suitable hyper-parameters on the train set.
+Since real test set of these data sets are not public, we will divide the original data set into the train set, the validation set and the test set. We can use choose suitable hyper-parameters based on the results of the train set and the validation set.
 
 
 \subsection{Performance Measurement}
@@ -220,11 +220,11 @@ because it can show that our model can generalize well.
 
 \subsection{Further Verification}
 
-For the trained network, we may first disable the attention mechanism or the CNN framework and compare the several metrics of the output saliency map with previous results. 
-This step will show their separate contributions and the properties of output.
+For the trained network, we may first disable the attention mechanism and compare the several metrics of the output saliency map with the CNN networks without attention mechanisms.
+This step will show the contributions of attention layers. If the metrics above have different levels of changes, we will infer about the properties of the attention layers according to the characteristic of these metrics.
 
 The second step is to find out why attention mechanism may help improve the performance. 
-Either during training or test process, upon the output of attention mechanism, we can add noise or use the output of another figure to misguide the CNN network. 
+During the test process, upon the output of attention mechanism, we can add noise or create random weights to misguide the CNN network to see whether the result is largely influenced.
 This step can show whether the final output depends largely on attention mechanism.
 
 If time permitting, we might also use the Integrated Gradients algorithm (IG) \cite{sundararajan2017axiomatic} to analyze what pixels in the picture contributes to the result. 
@@ -233,15 +233,13 @@ Besides, since the IG algorithm measures the gradient change from a totally dimm
 
 \section{Work Plan}
 
-Step1: Before the March 4 checkpoint, we are going to write the code of a traditional CNN network and applies attention mechanism to it. 
+Step1: Before the March 4 checkpoint, we are going to write the code of the CNN network and applies attention mechanism to it. 
 If time permitting, we can try two or three attention mechanisms that are differently defined to see whether there are some differences. 
-This will mainly be done by Shupei and Sijie.
 
 Step2: Before March 25, interpretability analysis will be done on the trained model. Details include cross validation to test both the final output and the influence of attention mechanism. 
-This can be done by Shupei and Mehdi.
 
 Step3: Before we submit the final report, we are going to use some other tools to find some other aspects of our model. 
-For example, whether there are some pixels that are not focused but help to achieve the result? How will our model respond to partial or dimmed picture? This can be done by Sijie and Mehdi.
+For example, whether there are some pixels that are not focused but help to achieve the final output and how our model will respond to dimmed pictures. 
 
 \newpage
 
