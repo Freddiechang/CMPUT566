@@ -63,8 +63,8 @@ def borji(saliency_map, g_truth, num_split=100, step_size=0.1):
         s_map[2:] = nnf.interpolate(s_map[2:], size=g_truth.shape[2:], mode='bicubic', align_corners=False)
 
     # normalize saliency map
-    s_map = s_map - s_map.mean(dim=(2, 3)).view(s_map.shape[0], 1, 1)
-    s_map = s_map / s_map.std(dim=(2, 3), unbiased=True).view(s_map.shape[0], 1, 1)
+    s_map -= s_map.min(dim=(2, 3)).view(s_map.shape[0], 1, 1)
+    s_map /= s_map.max(dim=(2, 3)).view(s_map.shape[0], 1, 1)
 
     # vector of s_map
     s_vec = torch.flatten(s_map)
@@ -99,3 +99,5 @@ def borji(saliency_map, g_truth, num_split=100, step_size=0.1):
 
     result = torch.stack(auc, dim=0)
     score = torch.mean(result)
+
+    return score
