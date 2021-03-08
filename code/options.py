@@ -12,7 +12,7 @@ parser.add_argument('--resize', action='store_true',
                     help='resize the input')
 parser.add_argument('--height', type=int, default=256)
 parser.add_argument('--width', type=int, default=256)
-parser.add_argument('--batch_size', type=int, default=16)
+parser.add_argument('--batch_size', type=int, default=3)
 parser.add_argument('--dataloader_workers', type=int, default=4)
 parser.add_argument('--shuffle', default=False, action='store_true')
 parser.add_argument('--prefetch', type=int, default=2)
