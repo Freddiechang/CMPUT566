@@ -147,10 +147,10 @@ So we need to generate saliency maps using a set of uniformed parameters from fi
 \subsection{Interpretability}
 
 The visual saliency algorithm takes an input of the original figure, and outputs a saliency map of the same size. Each pixel contains a float number from 0 to 1. Bigger numbers show that these pixels or areas get more focus. Therefore, it is a regression task and the output can be visualized by plotting the saliency map.
-However, we are still interested in what information in the picture is used by the algorithm to calculate the output. Some pixels, like sharp margins, may help locate the focused area, but may not be themselves focused.
-Therefore, gradients methods \cite{sundararajan2017axiomatic} can be used to determine which pixels have the most contribution to determine the focused areas.
+However, we are still interested in what information in the picture is used by the algorithm to calculate the output. Some pixels, like local sharp margins of the objects, may help locate the focused area, but may not be themselves focused. Big areas of the same color is global information that may also used by the attention layer and contributes to finding the focused areas.
+Therefore, gradients methods \cite{sundararajan2017axiomatic} can be used to determine which pixels have the most contribution to determine the final results, which can help us to confirm the use of attention layers.
 
-Moreover, we are doing analysis on existing CNN framework and use attention mechanism as a part of our framework. Since we previously have the assumption that convolution layers are good at processing local and abstract information while attention mechanism uses global information to help improve the performance, we should carefully analyze the contributions of these two components. In the network, attention mechanisms will act as special layers that are inserted into the neural network and assign different weights to their inputs.
+Moreover, we are doing analysis on existing CNN framework and use attention mechanism as a part of our framework. Since we previously have the assumption that convolution layers are good at processing local and abstract information while attention mechanism uses global information to help improve the performance, we should carefully analyze the contributions of both the convolution layers and the attention mechanism, which will act as special layers that are inserted into the neural network and assign different weights to their inputs.
 The first method is to disable the attention layers and see whether the performance becomes significantly worse. If it does, we will know that the inserted layers help improve the performance.
 The second method is to disturb the attention layers, namely by creating random heat maps with similar distributions to misguide the network. If the result gets worse, we will know that the output depends much on these layers.
 
@@ -229,15 +229,16 @@ because it can show that our model can generalize well.
 \subsection{Further Verification}
 
 For the trained network, we may first disable the attention mechanism and compare the several metrics of the output saliency map with the CNN networks without attention mechanisms.
-This step will show the contributions of attention layers. If the metrics above have different levels of changes, we will infer about the properties of the attention layers according to the characteristic of these metrics.
+This step will show the contributions of attention layers. If these metrics have different levels of changes, we can infer about the properties of the attention layers according to the characteristic of these metrics.
 
 The second step is to find out why attention mechanism may help improve the performance. 
 During the test process, upon the output of attention mechanism, we can add noise or create random weights to misguide the CNN network to see whether the result is largely influenced.
 This step can show whether the final output depends largely on attention mechanism.
 
-If time permitting, we might also use the Integrated Gradients algorithm (IG) \cite{sundararajan2017axiomatic} to analyze what pixels in the picture contributes to the result. 
-It might be interesting if we can find some pixels that are not highlighted but help the machine to focus. 
-Besides, since the IG algorithm measures the gradient change from a totally dimmed picture to the original one, we can test the sensitivity of our algorithm.
+If time permitting, we might also use the Integrated Gradients algorithm (IG) \cite{sundararajan2017axiomatic} to analyze what pixels in the picture contributes to the result. The algorithm does the following thing: Make the figure slowly change from a totally black or grey background to the original figure.
+After each step of changing, we calculate the gradients of a critical value to all the pixels. (This critical value can be the sum of the values of the highly focused pixels.) We can integrate these gradients (sum and multiply by pixel changes) to show which pixels have the most contribution to the final result during changing.
+It might be interesting if we can find some pixels that are not highlighted in the saliency map but help the machine to focus. 
+During this process, we can also monitor our network's sensitivity to dimmed picture and explore whether it corresponds with human feelings. 
 
 \section{Preliminary results}
 \subsection{Progress}
@@ -247,7 +248,8 @@ We have implemented the following parts:
     \item training, validation and test procedure
     \item SALICON data handling
     \item loss functions: NSS, CC, and AUC
-    \item attention mechanism module.
+    \item attention mechanism module
+    \item integrated gradients algorithm framework.
 \end{itemize}
 
 
