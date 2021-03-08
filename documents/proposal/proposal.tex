@@ -140,6 +140,9 @@ Our training data is
 Our validation data for tuning the hyper-parameters is the other 2 folds from SALICON, 
 and our testing data consists the remaining 1 fold from SALICON together with MIT1003.
 
+Some datasets might not have groundtruth saliency maps available, and different dataset might use different gaussian standard variance to create the saliency maps.
+So we need to generate saliency maps using a set of uniformed parameters from fixation data.
+
 
 \subsection{Interpretability}
 
@@ -154,15 +157,21 @@ The second method is to disturb the attention layers, namely by creating random 
 \section{Analysis}
 \subsection{Algorithm}
 
-We can use VGG, ResNet, MobileNet etc. as the backbone of our model, since existing models seem to be fairly simple. Before the picture is directly sent into the framework, an attention framework will firstly assign weights to different parts of the picture.
-Another alternative is we can incorporate attention mechanism \cite{zhangSelfAttentionGenerativeAdversarial2019a} into saliency detection model.
+We will use UNet \cite{ronnebergerUNetConvolutionalNetworks2015} as the backbone of our model. UNet has a symmetric expanding path, made of
+several skip connections, that enables precise localization. This feature can help assign visual correct saliency values 
+to the corresponding locations. It also enables UNet to incorporate low level features and
+high level features.
 
-Some datasets might not have heatmap groundtruth available, and different dataset might use different gaussian standard variance to create the heatmap.
-So we might need to generate heatmaps using a set of uniformed parameters from fixation data.
+As for the attention mechanism, we can implement it as a pytorch module, and then make this module
+part of UNet's data path. The goal of this module is to find long distance dependencies across 
+differents parts in the image. The reason for introducing this module is that CNNs have a limited
+reception field decided by the sizes of convolutional kernels, and we hope to alleviate this problem
+by using attention mechanisms. An example would be the attention mechanism described in \cite{zhangSelfAttentionGenerativeAdversarial2019a}.
+
 The training process will be similar to that in most computer vision tasks. Input data is feeded to the model,
 and the output is compared with groundtruth to compute loss. Loss is then backpropagated to update model parameters.
-Since real test set of these data sets are not public, we will divide the original data set into the train set, the validation set and the test set. We can use choose suitable hyper-parameters based on the results of the train set and the validation set.
 
+Since real test set of these data sets are not public, we will divide the original dataset into the train set, the validation set and the test set. We can use choose suitable hyper-parameters based on the results of the train set and the validation set.
 
 \subsection{Performance Measurement}
 
@@ -217,7 +226,6 @@ The area under this curve is reported as AUC.
 The performance is reported on the testing fold of SALICON and also the whole MIT1003 dataset.
 Reporting scores using different datasets can make the results more convincing,
 because it can show that our model can generalize well.
-
 \subsection{Further Verification}
 
 For the trained network, we may first disable the attention mechanism and compare the several metrics of the output saliency map with the CNN networks without attention mechanisms.
@@ -230,6 +238,18 @@ This step can show whether the final output depends largely on attention mechani
 If time permitting, we might also use the Integrated Gradients algorithm (IG) \cite{sundararajan2017axiomatic} to analyze what pixels in the picture contributes to the result. 
 It might be interesting if we can find some pixels that are not highlighted but help the machine to focus. 
 Besides, since the IG algorithm measures the gradient change from a totally dimmed picture to the original one, we can test the sensitivity of our algorithm.
+
+\section{Preliminary results}
+\subsection{Progress}
+We dicided to used Pytorch Lightning framework \cite{falcon2019pytorch} to implement our project.
+We have implemented the following parts:
+\begin{itemize}
+    \item training, validation and test procedure
+    \item SALICON data handling
+    \item loss functions: NSS, CC, and AUC
+    \item attention mechanism module.
+\end{itemize}
+
 
 \section{Work Plan}
 
