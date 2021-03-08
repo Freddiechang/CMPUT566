@@ -32,7 +32,7 @@ class SampleModel(pl.LightningModule):
         # It is independent of forward
         img, annotation, fixation = batch['image'], batch['annotation'], batch['fixation']
         prediction = self.net(img)
-        l = -1 * nss(prediction, fixation)
+        l = -1 * nss(prediction, fixation).sum()
         # Logging to TensorBoard by default
         self.log('train_loss', l)
         return l
@@ -40,7 +40,7 @@ class SampleModel(pl.LightningModule):
     def validation_step(self, batch, batch_idx):
         img, annotation, fixation = batch['image'], batch['annotation'], batch['fixation']
         prediction = self.net(img)
-        l = -1 * nss(prediction, fixation)
+        l = -1 * nss(prediction, fixation).sum()
         # Logging to TensorBoard by default
         self.log('val_loss', l)
         return l
@@ -48,7 +48,7 @@ class SampleModel(pl.LightningModule):
     def test_step(self, batch, batch_idx):
         img, annotation, fixation = batch['image'], batch['annotation'], batch['fixation']
         prediction = self.net(img)
-        l = -1 * nss(prediction, fixation)
+        l = -1 * nss(prediction, fixation).sum()
         # Logging to TensorBoard by default
         self.log('test_loss', l)
         return l
