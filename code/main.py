@@ -2,18 +2,17 @@ import os
 from torchvision import transforms
 import pytorch_lightning as pl
 
-from model.SampleModel import SampleModel
+from model.UNetAttn import UNetAttn
 from data.salicon import SALICONDataModule
 
 from options import parser
 
 # add model specific args
-parser = SampleModel.add_model_specific_args(parser)
+parser = UNetAttn.add_model_specific_args(parser)
 args = parser.parse_args()
 
 data_module = SALICONDataModule(args)
-autoencoder = SampleModel()
+autoencoder = UNetAttn()
 trainer = pl.Trainer.from_argparse_args(args)
-trainer = pl.Trainer()
 trainer.fit(autoencoder, data_module)
 trainer.test(datamodule=data_module)
