@@ -11,6 +11,7 @@
 \usepackage{amsmath}               % great math stuff
 \usepackage{amsfonts}              % for blackboard bold, etc
 \usepackage{amsthm}                % better theorem environments
+\usepackage{hyperref}
 
 
 
@@ -156,6 +157,12 @@ The second method is to disturb the attention layers, namely by creating random 
 
 \section{Analysis}
 \subsection{Algorithm}
+We choose CNN to predict the saliency maps. The filters in CNNs function as feature extractors,
+and as the depth of the convolutional layer go up, the features tend to be more sophisticated
+and high level. If we have learnable parameters assigned to different filters, the model can
+learn to presict which features are more attractive to human. 
+This feature of CNNs fits our need of detecting visual saliency and it is the reason that we 
+chose CNN.
 
 We will use UNet \cite{ronnebergerUNetConvolutionalNetworks2015} as the backbone of our model. UNet has a symmetric expanding path, made of
 several skip connections, that enables precise localization. This feature can help assign visual correct saliency values 
@@ -241,20 +248,35 @@ It might be interesting if we can find some pixels that are not highlighted in t
 During this process, we can also monitor our network's sensitivity to dimmed picture and explore whether it corresponds with human feelings. 
 
 \section{Preliminary results}
+
+
+
+\section{Work Plan}
 \subsection{Progress}
 We dicided to used Pytorch Lightning framework \cite{falcon2019pytorch} to implement our project.
 We have implemented the following parts:
 \begin{itemize}
-    \item training, validation and test procedure
-    \item SALICON data handling
-    \item loss functions: NSS, CC, and AUC
-    \item attention mechanism module
-    \item integrated gradients algorithm framework.
+    \item training, validation and test procedure (implemented by Shupei)
+    \item SALICON data handling (implemented by Shupei)
+    \item loss functions: NSS, CC, shffled AUC, AUC-Borji, and AUC-Judd (NSS and CC implementedby Shupei, all AUC methods implemented by Mehdi)
+    \item attention mechanism module (implemented by Shupei)
+    \item integrated gradients algorithm framework (implemented by Sijie).
+\end{itemize}
+We used GitHub for collaboration: \href{https://github.com/Freddiechang/CMPUT566}{our GitHub repo page}.
+
+Credits for this report:
+\begin{itemize}
+    \item introduction (written by Shupei, revised by Mehdi)
+    \item related work (written and revised by Shupei)
+    \item datasets (written by Sijie and revised by Shupei)
+    \item interpretability (written and revised by Shupei)
+    \item algorithm (written by Sijie and revised by Shupei)
+    \item performance measurement (written by Sijie and revised by Shupei)
+    \item further verification (written and revised by Sijie)
+    \item work plan (written and revised by Sijie).
 \end{itemize}
 
-
-\section{Work Plan}
-
+\subsection{Future Plan}
 Step1: Before the March 4 checkpoint, we are going to write the code of the CNN network and applies attention mechanism to it. 
 If time permitting, we can try two or three attention mechanisms that are differently defined to see whether there are some differences. 
 

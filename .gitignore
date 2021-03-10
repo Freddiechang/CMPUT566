@@ -3,6 +3,7 @@
 *.blg
 *.log
 *.pdf
+*.out
 *.synctex.gz
 __pycache__
 code/MNIST
