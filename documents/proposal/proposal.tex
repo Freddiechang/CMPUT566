@@ -160,18 +160,18 @@ The second method is to disturb the attention layers, namely by creating random 
 We choose CNN to predict the saliency maps. The filters in CNNs function as feature extractors,
 and as the depth of the convolutional layer go up, the features tend to be more sophisticated
 and high level. If we have learnable parameters assigned to different filters, the model can
-learn to presict which features are more attractive to humans. 
+learn to predict which features are more attractive to humans. 
 This feature of CNNs fits our need of detecting visual saliency and it is the reason that we 
 chose CNN.
 
 We will use UNet \cite{ronnebergerUNetConvolutionalNetworks2015} as the backbone of our model. UNet has a symmetric expanding path, made of
-several skip connections, that enables precise localization. This feature can help assign visual correct saliency values 
-to the corresponding locations. It also enables UNet to incorporate low level features and
+several skip connections, that enables precise localization. This feature can help assign correct visual saliency values 
+to the corresponding locations. It also enables UNet to incorporate both low level features and
 high level features.
 
 As for the attention mechanism, we can implement it as a pytorch module, and then make this module
 part of UNet's data path. The goal of this module is to find long distance dependencies across 
-differents parts in the image. The reason for introducing this module is that CNNs have a limited
+different parts in the image. The reason for introducing this module is that CNNs have a limited
 reception field decided by the sizes of convolutional kernels, and we hope to alleviate this problem
 by using attention mechanisms. An example would be the attention mechanism described in \cite{zhangSelfAttentionGenerativeAdversarial2019a}.
 
