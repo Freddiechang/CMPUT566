@@ -19,7 +19,7 @@
 \begin{document}
 
 \begin{center}
-{\bf \Large Visual Saliency: A Project Proposal}  \\
+{\bf \Large Visual Saliency: Mid-point Check Report}  \\
 \vspace{.1in}
 {\em Sijie Ling, Shupei Zhang, Mehdi Akbarian Rastaghi}
 \end{center}
@@ -68,11 +68,11 @@ One example of the original image and its corresponding saliency map is shown in
 
 \section{Related Work}
 
-Visual saliency detection methods can be categorized into two two classes: bottom-up models and top-down models \cite{congReviewVisualSaliency2019}.
+Visual saliency detection methods can be categorized into two classes: bottom-up models and top-down models \cite{congReviewVisualSaliency2019}.
 Before deep learning was widely applied in this field, most of the early methods are bottom-up models.
 Those early methods usually involve biological and psychological research about visual attention mechanism. And those two approaches match the common beliefs about biological process of human vision.
 In general, those models try to establish links between visual saliency and low-level image features, such as color, contrast, brightness etc. The Itti. model\cite{ittiModelSaliencybasedVisual1998}
-is one of the earliest model of this kind, which predicts visual saliency from linear combination of features calculated from color, intensity and orientation.
+is one of the earliest models of this kind, which predicts visual saliency from linear combination of features calculated from color, intensity and orientation.
 Some other techniques are also used to achieve better results, such as frequency domain analysis, sparse representation, cellular automata etc. \cite{congReviewVisualSaliency2019}
 
 Top-down models, in the other hand, try to find what factors have the most impact on visual saliency. Those models use visual saliency datasets, which contain images and their saliency annotations
@@ -82,7 +82,7 @@ Vig et al. \cite{vigLargeScaleOptimizationHierarchical2014} proposed the first n
 detection tasks. Very deep convolutional networks (VGG) is used in multiple models \cite{kruthiventiDeepFixFullyConvolutional2015, kummererDeepGazeIIReading2016, corniaPredictingHumanEye2018}, and some of them incorporate gaussian prior for performance improvement.
 Generative adversarial networks also achieve good results in saliency prediction \cite{panSalGANVisualSaliency2018, cheHowGazeInfluenced2020}.
 
-Transformer is a network based on attention mechanisms, ans is first applied in natural language processing (NLP) for its ability to model long range and multi-level information \cite{bahdanauNeuralMachineTranslation2016a, vaswaniAttentionAllYou2017a}.
+Transformer is a network based on attention mechanisms, and is first applied in natural language processing (NLP) for its ability to model long range and multi-level information \cite{bahdanauNeuralMachineTranslation2016a, vaswaniAttentionAllYou2017a}.
 They are later introduced for computer vision tasks and show strong potential in modeling non-local dependencies in images \cite{zhangSelfAttentionGenerativeAdversarial2019a}.
 But this technique has not been applied in visual saliency tasks so far.
 
@@ -93,7 +93,7 @@ The computer vision attention mechanism focuses more on global information, and 
 
 \section{Data}
 \subsection{Datasets}
-
+\label{sec:datasets}
 The datasets that are commonly used for image saliency prediction tasks are MIT1003 \cite{judd2012benchmark}, CAT2000 \cite{borji2015cat2000} and SALICON \cite{jiang2015salicon}.
 In all three datasets, the original data are normal pictures. Grey margins are attached to some of the pictures to make them the same size. 
 The labels, or the training targets are heatmaps that highlight some regions that are of interest to human.
@@ -124,7 +124,7 @@ viewing duration is 5 seconds. Fixation data from only 18 out of 24 test subject
 set, and the test set is released with only the original images.
 
 The SALICON dataset is created using images from Microsoft Common Objects in Context (MS COCO) dataset\cite{linMicrosoftCOCOCommon2015}.
-Instead of using a eye-tracker, mouse trajectories from different viewers are used in this dataset 
+Instead of using an eye-tracker, mouse trajectories from different viewers are used in this dataset 
 to calculate probability distribution of visual attention. A total of 20000 images from 80 categories, including
 10000 in training set, 5000 in validation set, and 5000 in test set.
 In training set, the original images, fixation maps, and saliency maps are all available, while 
@@ -132,7 +132,7 @@ the test set is released without fixation maps and saliency maps.
 
 
 We plan to combine the training and validation set of SALICON, 
-and split it into 10 folds(7 for training, 2 for validation, and 1 for testing). 
+and split it into 10 folds (7 for training, 2 for validation, and 1 for testing). 
 Our training data is
 \begin{itemize}
     \item 7 folds from SALICON
@@ -147,9 +147,9 @@ So we need to generate saliency maps using a set of uniformed parameters from fi
 
 \subsection{Interpretability}
 
-The visual saliency algorithm takes an input of the original figure, and outputs a saliency map of the same size. Each pixel contains a float number from 0 to 1. Bigger numbers show that these pixels or areas get more focus. Therefore, it is a regression task and the output can be visualized by plotting the saliency map. From the visaulization, we can intuitively judge whether the output saliency map corresponds with real data from people to check its interpretability.
+The visual saliency algorithm takes an input of the original figure, and outputs a saliency map of the same size. Each pixel contains a float number from 0 to 1. Bigger numbers show that these pixels or areas get more focus. Therefore, it is a regression task and the output can be visualized by plotting the saliency map. From the visualization, we can intuitively judge whether the output saliency map corresponds with real data from people to check its interpretability.
 
-However, there are several questions about interpretability that we need to answer if our inplementation of attention mechanism works. The methods to check the results we suppose are detailed described in the "Further Verification" section.
+However, there are several questions about interpretability that we need to answer if our implementation of attention mechanism works. The methods to check the results we suppose are detailed described in the "Further Verification" section.
 
 \begin{itemize}
     \item The deep neural network is very powerful and can fit complex functions. If we insert a layer for attention, how should we confirm that adding these layers can effectively improve the performance, and their function cannot be replaced by other simpler layers (like fully connection layers) or being integrated into other layers?
@@ -248,7 +248,18 @@ It might be interesting if we can find some pixels that are not highlighted in t
 During this process, we can also monitor our network's sensitivity to dimmed picture and explore whether it corresponds with human feelings. 
 
 \section{Preliminary results}
-
+We have taken a close look at the datasets we will use, and our findings are presented
+in the datasets section \ref{sec:datasets}. We have also finished implementing a model prototype.
+The structure of the model is shown in Figure \ref{img:network}.
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=7in]{imgs/network.pdf}
+    \caption{Network structure}
+    \label{img:network}
+\end{figure}
+Currently we are still training our model, so we don't have any results to share at this point.
+One interesting thing we noticed is that the attention module consumes a lot of memory space 
+on the gpu and it is quite slow due to the multiplication of large matrices.
 
 
 \section{Work Plan}
@@ -273,7 +284,8 @@ Credits for this report:
     \item algorithm (written by Sijie and revised by Shupei)
     \item performance measurement (written by Sijie and revised by Shupei)
     \item further verification (written and revised by Sijie)
-    \item work plan (written and revised by Sijie).
+    \item preliminary results (written by Shupei)
+    \item work plan (written and revised by Shupei).
 \end{itemize}
 
 \subsection{Future Plan}
