@@ -3,6 +3,7 @@ from torch import nn
 import torch.nn.functional as F
 from argparse import ArgumentParser
 import pytorch_lightning as pl
+from torchvision.utils import make_grid
 
 from loss.loss import nss, cc
 from model.UNetParts import *
@@ -68,15 +69,23 @@ class UNetAttn(pl.LightningModule):
     def validation_step(self, batch, batch_idx):
         img, annotation, fixation = batch['image'], batch['annotation'], batch['fixation']
         prediction = self.custom_forward(img)
-        l = -1 * nss(prediction, fixation).sum()
+        l = nss(prediction, fixation).sum()
         # Logging to TensorBoard by default
         self.log('val_loss', l)
+        if batch_idx % 20 == 0:
+            tensorboard = self.logger.experiment
+            grid = make_grid(img)
+            tensorboard.add_image('image', grid)
+            grid = make_grid(annotation)
+            tensorboard.add_image('gt', grid)
+            grid = make_grid(prediction)
+            tensorboard.add_image('pred', grid)
         return l
     
     def test_step(self, batch, batch_idx):
         img, annotation, fixation = batch['image'], batch['annotation'], batch['fixation']
         prediction = self.custom_forward(img)
-        l = -1 * nss(prediction, fixation).sum()
+        l = nss(prediction, fixation).sum()
         # Logging to TensorBoard by default
         self.log('test_loss', l)
         return l

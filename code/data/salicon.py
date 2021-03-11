@@ -72,6 +72,9 @@ class SALICON(Dataset):
         fixation = Image.open(fixation_path)
 
         image = self.transform["image"](image)
+        #handling grayscale images
+        if image.shape[0] == 1:
+            image = torch.cat((image, image, image), dim=0)
         annotation = self.transform["annotation"](annotation)
         fixation = self.transform["annotation"](fixation)
 
