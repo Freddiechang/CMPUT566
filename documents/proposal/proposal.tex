@@ -237,15 +237,17 @@ Reporting scores using different datasets can make the results more convincing,
 because it can show that our model can generalize well.
 \subsection{Further Verification}
 
-The first verification is the pre-test verification. We use the same series of training samples to train two models. One of them is with the attention layer. The other replaces this layer with a simple one (e.g. fully connection layer). Then we will compare the training process, including the convergence speed, the loss change and the final performance measured by different metrics. If the attention mechanism is simple enough and can be easily replaced by other layers or integrated into the network, then it does not have any specialties.
+The first verification is the pre-training modification. We use the same series of training samples to train two models. One of them is with the attention layer. The other replaces this layer with a simple one (e.g. fully connection layer). Then we will compare the training process, including the convergence speed, the loss change and the final performance measured by different metrics. If the attention mechanism is simple enough and can be easily replaced by other layers or integrated into the network, then it does not have any specialties.
 
-The second verification is the post-test verification. Namely, during test, we will disable the attention layer or add random noise and compare the final performance with the output of the normal framework. This step will check the contribution and importance of the attention layer. If the metrics to measure the performance have different levels of changes, we can infer about the properties of the attention layers according to the characteristic of these metrics.
+The second verification is the post-training verification. Namely, during test, we will disable the attention layer or add random noise and compare the final performance with the output of the normal framework. This step will check the contribution and importance of the attention layer. If the metrics to measure the performance have different levels of changes, we can infer about the properties of the attention layers according to the characteristic of these metrics.
 
 We are also interested in what information in the picture is used by the algorithm to calculate the output. Some pixels, like local sharp margins of the objects, may help locate the focused area, but may not be themselves focused. A large area of the same color in the middle may be coded as global information and help the network to distract attention to more important parts of the pictures.
-If time permitting, we might also use the Integrated Gradients algorithm (IG) \cite{sundararajan2017axiomatic} to analyze what pixels in the picture contributes to the result. The algorithm does the following thing: Make the figure slowly change from a totally black or grey background to the original figure.
+We might use the Integrated Gradients algorithm (IG) \cite{sundararajan2017axiomatic} to analyze what pixels in the picture contributes to the result. The algorithm does the following thing: Make the figure slowly change from a totally black or grey background to the original figure.
 After each step of changing, we calculate the gradients of a critical value to all the pixels. (This critical value can be the sum of the values of the highly focused pixels.) We can integrate these gradients (sum and multiply by pixel changes) to show which pixels have the most contribution to the final result during changing.
 It might be interesting if we can find some pixels that are not highlighted in the saliency map but help the machine to focus. 
 During this process, we can also monitor our network's sensitivity to dimmed picture and explore whether it corresponds with human feelings. 
+
+If time permitting, we are going to test whether the position of the attention layer will change the result. We can explore whether the attention layer works well on simple or complex features based on the depth of the network.
 
 \section{Preliminary results}
 We have taken a close look at the datasets we will use, and our findings are presented
@@ -289,13 +291,13 @@ Credits for this report:
 \end{itemize}
 
 \subsection{Future Plan}
-Step1: Before the March 4 checkpoint, we are going to write the code of the CNN network and applies attention mechanism to it. 
-If time permitting, we can try two or three attention mechanisms that are differently defined to see whether there are some differences. 
+Step1: Before the March 11 checkpoint, we are going to write the code of the CNN network and applies attention mechanism to it. Coding work has already been finished by Shupei and Mehdi and the code is running smoothly.
 
-Step2: Before March 25, interpretability analysis will be done on the trained model. Details include cross validation to test both the final output and the influence of attention mechanism. 
+Step2: For the first week after the checkpoint, we are going to use the validation set to choose good parameters of the network to achieve better results. We also consider accelerating the matrix calculation of the attention layer in order to get the results faster in later steps.
 
-Step3: Before we submit the final report, we are going to use some other tools to find some other aspects of our model. 
-For example, whether there are some pixels that are not focused but help to achieve the final output and how our model will respond to dimmed pictures. 
+Step3: For the second and third week after the checkpoint, we will mainly focus on interpretation tasks. This includes pre-training modification, post-training verification, and the intergrated gradients method.
+
+Step4: Before submission, if we finish the above steps early, we can try other things mentioned, including implementing another attention mechanism or change the position of the attraction layer in the network in order to find more properties of the attention layer.
 
 \newpage
 
