@@ -35,7 +35,7 @@ Hence, visual saliency can help us to identify the most imminent threat, danger,
 Technically, it reduces the load on our visual system. 
 
 The study of visual saliency can help us to have a deeper understanding of the human visual system. 
-Researching in this area can lead to many applications, such as image/video segmentation, image/video compression, foreground annotation, perceptual quality assessment, etc \cite{congReviewVisualSaliency2019}.  
+Researching in this area can lead to many applications, such as image/video segmentation, image/video compression, foreground annotation, perceptual quality assessment, etc. \cite{congReviewVisualSaliency2019}.  
 To shed more light, let's start with a case. 
 
 Most of the current video coding methods are using block-based compression. 
@@ -171,13 +171,13 @@ several skip connections, that enables precise localization. This feature can he
 to the corresponding locations. It also enables UNet to incorporate both low level features and
 high level features.
 
-As for the attention mechanism, we can implement it as a pytorch module, and then make this module
+As for the attention mechanism, we can implement it as a Pytorch module, and then make this module
 part of UNet's data path. The goal of this module is to find long distance dependencies across 
 different parts in the image. The reason for introducing this module is that CNNs have a limited
 reception field decided by the sizes of convolutional kernels, and we hope to alleviate this problem
 by using attention mechanisms. An example would be the attention mechanism described in \cite{zhangSelfAttentionGenerativeAdversarial2019a}.
 
-The training process will be similar to that in most computer vision tasks. Input data is feeded to the model,
+The training process will be similar to that in most computer vision tasks. Input data is fed to the model,
 and the output is compared with groundtruth to compute loss. Loss is then back propagated to update model parameters.
 
 Since real test set of these data sets are not public, we will divide the original dataset into the train set, the validation set and the test set. We can choose suitable hyper-parameters based on the results of the train set and the validation set.
@@ -266,12 +266,12 @@ on the gpu and it is quite slow due to the multiplication of large matrices.
 
 \section{Work Plan}
 \subsection{Progress}
-We decided to used Pytorch Lightning framework \cite{falcon2019pytorch} to implement our project.
+We decided to use Pytorch Lightning framework \cite{falcon2019pytorch} to implement our project.
 We have implemented the following parts:
 \begin{itemize}
     \item training, validation and test procedure (implemented by Shupei)
     \item SALICON data handling (implemented by Shupei)
-    \item loss functions: NSS, CC, shuffled AUC, AUC-Borji, and AUC-Judd (NSS and CC implementedby Shupei, all AUC methods implemented by Mehdi)
+    \item loss functions: NSS, CC, shuffled AUC, AUC-Borji, and AUC-Judd (NSS and CC implemented by Shupei, all AUC methods implemented by Mehdi)
     \item attention mechanism module (implemented by Shupei)
     \item integrated gradients algorithm framework (implemented by Sijie).
 \end{itemize}
@@ -287,7 +287,7 @@ Credits for this report:
     \item performance measurement (written by Sijie and revised by Shupei)
     \item further verification (written and revised by Sijie)
     \item preliminary results (written by Shupei)
-    \item work plan (written and revised by Shupei).
+    \item work plan (written and revised by Shupei and Sijie).
 \end{itemize}
 
 \subsection{Future Plan}
@@ -295,10 +295,14 @@ Step1: Before the March 11 checkpoint, we are going to write the code of the CNN
 
 Step2: For the first week after the checkpoint, we are going to use the validation set to choose good parameters of the network to achieve better results. We also consider accelerating the matrix calculation of the attention layer in order to get the results faster in later steps.
 
-Step3: For the second and third week after the checkpoint, we will mainly focus on interpretation tasks. This includes pre-training modification, post-training verification, and the intergrated gradients method.
+Step3: For the second and third week after the checkpoint, we will mainly focus on interpretation tasks. This includes pre-training modification, post-training verification, and the integrated gradients method.
 
 Step4: Before submission, if we finish the above steps early, we can try other things mentioned, including implementing another attention mechanism or change the position of the attraction layer in the network in order to find more properties of the attention layer.
 
+%ethics
+%biased dataset
+%misuse: put some stuff in less salient region
+%
 \newpage
 
 \bibliographystyle{unsrt}
