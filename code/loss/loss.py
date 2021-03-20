@@ -178,7 +178,8 @@ def shuffled(saliency_map, g_truth, other_map, num_split=100, step_size=0.1):
     # normalize saliency map
     _, s_mins = s_map.view(s_map.shape[0], s_map.shape[1], -1).min(dim=2)
     _, s_maxs = s_map.view(s_map.shape[0], s_map.shape[1], -1).max(dim=2)
-    for i in range(0, 5):
+
+    for i in range(0, s_map.shape[0]):
         s_map[i, :, :, :] -= s_mins[i]
         s_map[i, :, :, :] /= s_maxs[i]
     # vector of s_map
