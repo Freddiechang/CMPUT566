@@ -14,7 +14,7 @@ def nss(prediction, ground_truth):
     sal_map = sal_map / prediction.std(dim=(2, 3), unbiased=True).view(prediction.shape[0], 1, 1)
     sal_map = sal_map * (ground_truth > 0)
     loss = sal_map.sum(dim=(2, 3)) / ground_truth.count_nonzero(dim=(2, 3))
-    return loss.sum()
+    return loss
 
 
 def vcorrcoef(x, y):
@@ -44,7 +44,7 @@ def cc(prediction, ground_truth):
     fix_map = fix_map / ground_truth.std(dim=(2, 3), unbiased=True).view(ground_truth.shape[0], 1, 1)
 
     loss = vcorrcoef(sal_map.view(sal_map.shape[0], -1), fix_map.view(fix_map.shape[0], -1))
-    return loss.sum()
+    return loss
 
 
 def borji(saliency_map, g_truth, num_split=100, step_size=0.1):

@@ -2,8 +2,10 @@
 *.bbl
 *.blg
 *.log
-*.pdf
+proposal.pdf
+*.out
 *.synctex.gz
 __pycache__
 code/MNIST
 dataset
+lightning_logs

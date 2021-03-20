@@ -11,6 +11,7 @@
 \usepackage{amsmath}               % great math stuff
 \usepackage{amsfonts}              % for blackboard bold, etc
 \usepackage{amsthm}                % better theorem environments
+\usepackage{hyperref}
 
 
 
@@ -18,7 +19,7 @@
 \begin{document}
 
 \begin{center}
-{\bf \Large Visual Saliency: A Project Proposal}  \\
+{\bf \Large Visual Saliency: Mid-point Check Report}  \\
 \vspace{.1in}
 {\em Sijie Ling, Shupei Zhang, Mehdi Akbarian Rastaghi}
 \end{center}
@@ -34,7 +35,7 @@ Hence, visual saliency can help us to identify the most imminent threat, danger,
 Technically, it reduces the load on our visual system. 
 
 The study of visual saliency can help us to have a deeper understanding of the human visual system. 
-Researching in this area can lead to many applications, such as image/video segmentation, image/video compression, foreground annotation, perceptual quality assessment, etc \cite{congReviewVisualSaliency2019}.  
+Researching in this area can lead to many applications, such as image/video segmentation, image/video compression, foreground annotation, perceptual quality assessment, etc. \cite{congReviewVisualSaliency2019}.  
 To shed more light, let's start with a case. 
 
 Most of the current video coding methods are using block-based compression. 
@@ -67,11 +68,11 @@ One example of the original image and its corresponding saliency map is shown in
 
 \section{Related Work}
 
-Visual saliency detection methods can be categorized into two two classes: bottom-up models and top-down models \cite{congReviewVisualSaliency2019}.
+Visual saliency detection methods can be categorized into two classes: bottom-up models and top-down models \cite{congReviewVisualSaliency2019}.
 Before deep learning was widely applied in this field, most of the early methods are bottom-up models.
 Those early methods usually involve biological and psychological research about visual attention mechanism. And those two approaches match the common beliefs about biological process of human vision.
 In general, those models try to establish links between visual saliency and low-level image features, such as color, contrast, brightness etc. The Itti. model\cite{ittiModelSaliencybasedVisual1998}
-is one of the earliest model of this kind, which predicts visual saliency from linear combination of features calculated from color, intensity and orientation.
+is one of the earliest models of this kind, which predicts visual saliency from linear combination of features calculated from color, intensity and orientation.
 Some other techniques are also used to achieve better results, such as frequency domain analysis, sparse representation, cellular automata etc. \cite{congReviewVisualSaliency2019}
 
 Top-down models, in the other hand, try to find what factors have the most impact on visual saliency. Those models use visual saliency datasets, which contain images and their saliency annotations
@@ -81,25 +82,25 @@ Vig et al. \cite{vigLargeScaleOptimizationHierarchical2014} proposed the first n
 detection tasks. Very deep convolutional networks (VGG) is used in multiple models \cite{kruthiventiDeepFixFullyConvolutional2015, kummererDeepGazeIIReading2016, corniaPredictingHumanEye2018}, and some of them incorporate gaussian prior for performance improvement.
 Generative adversarial networks also achieve good results in saliency prediction \cite{panSalGANVisualSaliency2018, cheHowGazeInfluenced2020}.
 
-Transformer is a network based on attention mechanisms, ans is first applied in natural language processing (NLP) for its ability to model long range and multi-level information \cite{bahdanauNeuralMachineTranslation2016a, vaswaniAttentionAllYou2017a}.
+Transformer is a network based on attention mechanisms, and is first applied in natural language processing (NLP) for its ability to model long range and multi-level information \cite{bahdanauNeuralMachineTranslation2016a, vaswaniAttentionAllYou2017a}.
 They are later introduced for computer vision tasks and show strong potential in modeling non-local dependencies in images \cite{zhangSelfAttentionGenerativeAdversarial2019a}.
 But this technique has not been applied in visual saliency tasks so far.
 
-Our trial of applying attention mechanism to CNNs to improve the performence also has supporting evidence from the aspect of cognitive psychology. There are two contradictory models that try to explain human attention mechanism \cite{gazzaniga2006cognitive}. 
+Our trial of applying attention mechanism to CNNs to improve the performance also has supporting evidence from the aspect of cognitive psychology. There are two contradictory models that try to explain human attention mechanism \cite{gazzaniga2006cognitive}. 
 In the “Early Selection Model”, complete analysis is not necessary for an unimportant stimulus before it is excluded from our focus area, while in the “Late Selection Model”, all the stimuli are equally processed until they reach at least the semantic level. 
 Both models have evidence and the key to solving the divergence is to find the threshold between them. From this view, since CNN usually have small receptive fields in the first few layers, the information is highly abstract for high level analysis, so traditional models can be regarded as similar to the late selection. 
 The computer vision attention mechanism focuses more on global information, and we guess that its low level of preprocessing can ease the burden of CNN and guide it to a better result.
 
 \section{Data}
 \subsection{Datasets}
-
+\label{sec:datasets}
 The datasets that are commonly used for image saliency prediction tasks are MIT1003 \cite{judd2012benchmark}, CAT2000 \cite{borji2015cat2000} and SALICON \cite{jiang2015salicon}.
 In all three datasets, the original data are normal pictures. Grey margins are attached to some of the pictures to make them the same size. 
 The labels, or the training targets are heatmaps that highlight some regions that are of interest to human.
 Generally, those datasets are created using eye-tracking devices or mouse tracking software. The trajectories of eye/mouse movement while
 observing the test images are recorded, and fixation maps can be created
 by placing the trajectories as white pixels on black backgrounds. Saliency maps are generated by
-applying a gaussian filter to the fixation maps and then normailize the results to range $[0, 1]$.
+applying a gaussian filter to the fixation maps and then normalize the results to range $[0, 1]$.
 Fig. \ref{img:data_example_2} shows one example from SALICON dataset, of the original image, its corresponding 
 fixation map, and the saliency map created by applying gaussian blur to the fixation map with $\sigma=19$.
 \begin{figure}[!h]
@@ -123,7 +124,7 @@ viewing duration is 5 seconds. Fixation data from only 18 out of 24 test subject
 set, and the test set is released with only the original images.
 
 The SALICON dataset is created using images from Microsoft Common Objects in Context (MS COCO) dataset\cite{linMicrosoftCOCOCommon2015}.
-Instead of using a eye-tracker, mouse trajectories from different viewers are used in this dataset 
+Instead of using an eye-tracker, mouse trajectories from different viewers are used in this dataset 
 to calculate probability distribution of visual attention. A total of 20000 images from 80 categories, including
 10000 in training set, 5000 in validation set, and 5000 in test set.
 In training set, the original images, fixation maps, and saliency maps are all available, while 
@@ -131,7 +132,7 @@ the test set is released without fixation maps and saliency maps.
 
 
 We plan to combine the training and validation set of SALICON, 
-and split it into 10 folds(7 for training, 2 for validation, and 1 for testing). 
+and split it into 10 folds (7 for training, 2 for validation, and 1 for testing). 
 Our training data is
 \begin{itemize}
     \item 7 folds from SALICON
@@ -140,29 +141,46 @@ Our training data is
 Our validation data for tuning the hyper-parameters is the other 2 folds from SALICON, 
 and our testing data consists the remaining 1 fold from SALICON together with MIT1003.
 
+Some datasets might not have groundtruth saliency maps available, and different dataset might use different gaussian standard variance to create the saliency maps.
+So we need to generate saliency maps using a set of uniformed parameters from fixation data.
+
 
 \subsection{Interpretability}
 
-The visual saliency algorithm takes an input of the original figure, and outputs a saliency map of the same size. Each pixel contains a float number from 0 to 1. Bigger numbers show that these pixels or areas get more focus. Therefore, it is a regression task and the output can be visualized by plotting the saliency map.
-However, we are still interested in what information in the picture is used by the algorithm to calculate the output. Some pixels, like sharp margins, may help locate the focused area, but may not be themselves focused.
-Therefore, gradients methods \cite{sundararajan2017axiomatic} can be used to determine which pixels have the most contribution to determine the focused areas.
+The visual saliency algorithm takes an input of the original figure, and outputs a saliency map of the same size. Each pixel contains a float number from 0 to 1. Bigger numbers show that these pixels or areas get more focus. Therefore, it is a regression task and the output can be visualized by plotting the saliency map. From the visualization, we can intuitively judge whether the output saliency map corresponds with real data from people to check its interpretability.
 
-Moreover, we are doing analysis on existing CNN framework and use attention mechanism as a part of our framework. Since we previously have the assumption that convolution layers are good at processing local and abstract information while attention mechanism uses global information to help improve the performance, we should carefully analyze the contributions of these two components. In the network, attention mechanisms will act as special layers that are inserted into the neural network and assign different weights to their inputs.
-The first method is to disable the attention layers and see whether the performance becomes significantly worse. If it does, we will know that the inserted layers help improve the performance.
-The second method is to disturb the attention layers, namely by creating random heat maps with similar distributions to misguide the network. If the result gets worse, we will know that the output depends much on these layers.
+However, there are several questions about interpretability that we need to answer if our implementation of attention mechanism works. The methods to check the results we suppose are detailed described in the "Further Verification" section.
+
+\begin{itemize}
+    \item The deep neural network is very powerful and can fit complex functions. If we insert a layer for attention, how should we confirm that adding these layers can effectively improve the performance, and their function cannot be replaced by other simpler layers (like fully connection layers) or being integrated into other layers?
+    \item If the performance is good, how should we learn whether the final result depends largely on the attention layer, since its function is to assign some weights to some features?
+    \item We previously assume that the attention layers help the network to focus on global information and cooperates with convolutional layers that focus on local features. How can we find evidence for this assumption?
+\end{itemize}
 
 \section{Analysis}
 \subsection{Algorithm}
+We choose CNN to predict the saliency maps. The filters in CNNs function as feature extractors,
+and as the depth of the convolutional layer go up, the features tend to be more sophisticated
+and high level. If we have learnable parameters assigned to different filters, the model can
+learn to predict which features are more attractive to humans. 
+This feature of CNNs fits our need of detecting visual saliency and it is the reason that we 
+chose CNN.
 
-We can use VGG, ResNet, MobileNet etc. as the backbone of our model, since existing models seem to be fairly simple. Before the picture is directly sent into the framework, an attention framework will firstly assign weights to different parts of the picture.
-Another alternative is we can incorporate attention mechanism \cite{zhangSelfAttentionGenerativeAdversarial2019a} into saliency detection model.
+We will use UNet \cite{ronnebergerUNetConvolutionalNetworks2015} as the backbone of our model. UNet has a symmetric expanding path, made of
+several skip connections, that enables precise localization. This feature can help assign correct visual saliency values 
+to the corresponding locations. It also enables UNet to incorporate both low level features and
+high level features.
 
-Some datasets might not have heatmap groundtruth available, and different dataset might use different gaussian standard variance to create the heatmap.
-So we might need to generate heatmaps using a set of uniformed parameters from fixation data.
-The training process will be similar to that in most computer vision tasks. Input data is feeded to the model,
-and the output is compared with groundtruth to compute loss. Loss is then backpropagated to update model parameters.
-Since real test set of these data sets are not public, we will divide the original data set into the train set, the validation set and the test set. We can use choose suitable hyper-parameters based on the results of the train set and the validation set.
+As for the attention mechanism, we can implement it as a Pytorch module, and then make this module
+part of UNet's data path. The goal of this module is to find long distance dependencies across 
+different parts in the image. The reason for introducing this module is that CNNs have a limited
+reception field decided by the sizes of convolutional kernels, and we hope to alleviate this problem
+by using attention mechanisms. An example would be the attention mechanism described in \cite{zhangSelfAttentionGenerativeAdversarial2019a}.
 
+The training process will be similar to that in most computer vision tasks. Input data is fed to the model,
+and the output is compared with groundtruth to compute loss. Loss is then back propagated to update model parameters.
+
+Since real test set of these data sets are not public, we will divide the original dataset into the train set, the validation set and the test set. We can choose suitable hyper-parameters based on the results of the train set and the validation set.
 
 \subsection{Performance Measurement}
 
@@ -217,30 +235,74 @@ The area under this curve is reported as AUC.
 The performance is reported on the testing fold of SALICON and also the whole MIT1003 dataset.
 Reporting scores using different datasets can make the results more convincing,
 because it can show that our model can generalize well.
-
 \subsection{Further Verification}
 
-For the trained network, we may first disable the attention mechanism and compare the several metrics of the output saliency map with the CNN networks without attention mechanisms.
-This step will show the contributions of attention layers. If the metrics above have different levels of changes, we will infer about the properties of the attention layers according to the characteristic of these metrics.
+The first verification is the pre-training modification. We use the same series of training samples to train two models. One of them is with the attention layer. The other replaces this layer with a simple one (e.g. fully connection layer). Then we will compare the training process, including the convergence speed, the loss change and the final performance measured by different metrics. If the attention mechanism is simple enough and can be easily replaced by other layers or integrated into the network, then it does not have any specialties.
 
-The second step is to find out why attention mechanism may help improve the performance. 
-During the test process, upon the output of attention mechanism, we can add noise or create random weights to misguide the CNN network to see whether the result is largely influenced.
-This step can show whether the final output depends largely on attention mechanism.
+The second verification is the post-training verification. Namely, during test, we will disable the attention layer or add random noise and compare the final performance with the output of the normal framework. This step will check the contribution and importance of the attention layer. If the metrics to measure the performance have different levels of changes, we can infer about the properties of the attention layers according to the characteristic of these metrics.
 
-If time permitting, we might also use the Integrated Gradients algorithm (IG) \cite{sundararajan2017axiomatic} to analyze what pixels in the picture contributes to the result. 
-It might be interesting if we can find some pixels that are not highlighted but help the machine to focus. 
-Besides, since the IG algorithm measures the gradient change from a totally dimmed picture to the original one, we can test the sensitivity of our algorithm.
+We are also interested in what information in the picture is used by the algorithm to calculate the output. Some pixels, like local sharp margins of the objects, may help locate the focused area, but may not be themselves focused. A large area of the same color in the middle may be coded as global information and help the network to distract attention to more important parts of the pictures.
+We might use the Integrated Gradients algorithm (IG) \cite{sundararajan2017axiomatic} to analyze what pixels in the picture contributes to the result. The algorithm does the following thing: Make the figure slowly change from a totally black or grey background to the original figure.
+After each step of changing, we calculate the gradients of a critical value to all the pixels. (This critical value can be the sum of the values of the highly focused pixels.) We can integrate these gradients (sum and multiply by pixel changes) to show which pixels have the most contribution to the final result during changing.
+It might be interesting if we can find some pixels that are not highlighted in the saliency map but help the machine to focus. 
+During this process, we can also monitor our network's sensitivity to dimmed picture and explore whether it corresponds with human feelings. 
+
+If time permitting, we are going to test whether the position of the attention layer will change the result. We can explore whether the attention layer works well on simple or complex features based on the depth of the network.
+
+\section{Preliminary results}
+We have taken a close look at the datasets we will use, and our findings are presented
+in the datasets section \ref{sec:datasets}. We have also finished implementing a model prototype.
+The structure of the model is shown in Figure \ref{img:network}.
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=7in]{imgs/network.pdf}
+    \caption{Network structure}
+    \label{img:network}
+\end{figure}
+Currently we are still training our model, so we don't have any results to share at this point.
+One interesting thing we noticed is that the attention module consumes a lot of memory space 
+on the gpu and it is quite slow due to the multiplication of large matrices.
+
 
 \section{Work Plan}
+\subsection{Progress}
+We decided to use Pytorch Lightning framework \cite{falcon2019pytorch} to implement our project.
+We have implemented the following parts:
+\begin{itemize}
+    \item training, validation and test procedure (implemented by Shupei)
+    \item SALICON data handling (implemented by Shupei)
+    \item loss functions: NSS, CC, shuffled AUC, AUC-Borji, and AUC-Judd (NSS and CC implemented by Shupei, all AUC methods implemented by Mehdi)
+    \item attention mechanism module (implemented by Shupei)
+    \item integrated gradients algorithm framework (implemented by Sijie).
+\end{itemize}
+We used GitHub for collaboration: \href{https://github.com/Freddiechang/CMPUT566}{our GitHub repo page}.
 
-Step1: Before the March 4 checkpoint, we are going to write the code of the CNN network and applies attention mechanism to it. 
-If time permitting, we can try two or three attention mechanisms that are differently defined to see whether there are some differences. 
+Credits for this report:
+\begin{itemize}
+    \item introduction (written by Shupei, revised by Mehdi)
+    \item related work (written and revised by Shupei)
+    \item datasets (written by Sijie and revised by Shupei)
+    \item interpretability (written and revised by Shupei)
+    \item algorithm (written by Sijie and revised by Shupei)
+    \item performance measurement (written by Sijie and revised by Shupei)
+    \item further verification (written and revised by Sijie)
+    \item preliminary results (written by Shupei)
+    \item work plan (written and revised by Shupei and Sijie).
+\end{itemize}
 
-Step2: Before March 25, interpretability analysis will be done on the trained model. Details include cross validation to test both the final output and the influence of attention mechanism. 
+\subsection{Future Plan}
+Step1: Before the March 11 checkpoint, we are going to write the code of the CNN network and applies attention mechanism to it. Coding work has already been finished by Shupei and Mehdi and the code is running smoothly.
 
-Step3: Before we submit the final report, we are going to use some other tools to find some other aspects of our model. 
-For example, whether there are some pixels that are not focused but help to achieve the final output and how our model will respond to dimmed pictures. 
+Step2: For the first week after the checkpoint, we are going to use the validation set to choose good parameters of the network to achieve better results. We also consider accelerating the matrix calculation of the attention layer in order to get the results faster in later steps.
 
+Step3: For the second and third week after the checkpoint, we will mainly focus on interpretation tasks. This includes pre-training modification, post-training verification, and the integrated gradients method.
+
+Step4: Before submission, if we finish the above steps early, we can try other things mentioned, including implementing another attention mechanism or change the position of the attraction layer in the network in order to find more properties of the attention layer.
+
+%ethics
+%biased dataset
+%misuse: put some stuff in less salient region
+%
 \newpage
 
 \bibliographystyle{unsrt}
