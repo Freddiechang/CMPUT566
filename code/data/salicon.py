@@ -8,7 +8,6 @@ from PIL import Image
 from pytorch_lightning.core.datamodule import LightningDataModule
 
 
-
 class SALICON(Dataset):
     def __init__(self, args, mode="train"):
         self.resize = args.resize
@@ -26,7 +25,8 @@ class SALICON(Dataset):
             transform_list["image"].append(transforms.Normalize(self.norm_mean, self.norm_std))
         transform_list["image"].append(transforms.ToTensor())
         transform_list["annotation"].append(transforms.ToTensor())
-        self.transform = {"image": transforms.Compose(transform_list["image"]), "annotation": transforms.Compose(transform_list["annotation"])}
+        self.transform = {"image": transforms.Compose(transform_list["image"]),
+                          "annotation": transforms.Compose(transform_list["annotation"])}
 
         if mode == "test":
             tmp_path = join(data_root, 'images', 'val')
@@ -49,13 +49,14 @@ class SALICON(Dataset):
             tmp_path = join(data_root, 'annotations', 'train')
             self.annotations = sorted([join(tmp_path, f) for f in listdir(tmp_path) if isfile(join(tmp_path, f))])
             tmp_path = join(data_root, 'annotations', 'val')
-            self.annotations += sorted([join(tmp_path, f) for f in listdir(tmp_path) if isfile(join(tmp_path, f))])[:-1500]
+            self.annotations += sorted([join(tmp_path, f) for f in listdir(tmp_path) if isfile(join(tmp_path, f))])[
+                                :-1500]
 
             tmp_path = join(data_root, 'fixations', 'train')
             self.fixations = sorted([join(tmp_path, f) for f in listdir(tmp_path) if isfile(join(tmp_path, f))])
             tmp_path = join(data_root, 'fixations', 'val')
-            self.fixations += sorted([join(tmp_path, f) for f in listdir(tmp_path) if isfile(join(tmp_path, f))])[:-1500]
-
+            self.fixations += sorted([join(tmp_path, f) for f in listdir(tmp_path) if isfile(join(tmp_path, f))])[
+                              :-1500]
 
     def __len__(self):
         return len(self.images)
@@ -65,14 +66,12 @@ class SALICON(Dataset):
         annotation_path = self.annotations[idx]
         fixation_path = self.fixations[idx]
 
-
-
         image = Image.open(img_path)
         annotation = Image.open(annotation_path)
         fixation = Image.open(fixation_path)
 
         image = self.transform["image"](image)
-        #handling grayscale images
+        # handling grayscale images
         if image.shape[0] == 1:
             image = torch.cat((image, image, image), dim=0)
         annotation = self.transform["annotation"](annotation)
@@ -80,6 +79,7 @@ class SALICON(Dataset):
 
         sample = {'image': image, 'annotation': annotation, 'fixation': fixation}
         return sample
+
 
 class SALICONDataModule(LightningDataModule):
 
@@ -105,7 +105,7 @@ class SALICONDataModule(LightningDataModule):
 
     # return the dataloader for each split
     def train_dataloader(self):
-        data_train = DataLoader(self.data_train, 
+        data_train = DataLoader(self.data_train,
                                 batch_size=self.args.batch_size,
                                 shuffle=self.args.shuffle,
                                 num_workers=self.args.dataloader_workers,
@@ -116,23 +116,23 @@ class SALICONDataModule(LightningDataModule):
         return data_train
 
     def val_dataloader(self):
-        data_val = DataLoader(self.data_val, 
-                                batch_size=self.args.batch_size,
-                                shuffle=self.args.shuffle,
-                                num_workers=self.args.dataloader_workers,
-                                pin_memory=True,
-                                drop_last=False,
-                                prefetch_factor=self.args.prefetch
-                                )
+        data_val = DataLoader(self.data_val,
+                              batch_size=self.args.batch_size,
+                              shuffle=self.args.shuffle,
+                              num_workers=self.args.dataloader_workers,
+                              pin_memory=True,
+                              drop_last=False,
+                              prefetch_factor=self.args.prefetch
+                              )
         return data_val
 
     def test_dataloader(self):
-        data_test = DataLoader(self.data_test, 
-                                batch_size=self.args.batch_size,
-                                shuffle=self.args.shuffle,
-                                num_workers=self.args.dataloader_workers,
-                                pin_memory=True,
-                                drop_last=False,
-                                prefetch_factor=self.args.prefetch
-                                )
+        data_test = DataLoader(self.data_test,
+                               batch_size=self.args.batch_size,
+                               shuffle=self.args.shuffle,
+                               num_workers=self.args.dataloader_workers,
+                               pin_memory=True,
+                               drop_last=False,
+                               prefetch_factor=self.args.prefetch
+                               )
         return data_test

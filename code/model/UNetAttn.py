@@ -8,6 +8,7 @@ from torchvision.utils import make_grid
 from loss.loss import nss, cc
 from model.UNetParts import *
 
+
 class UNetAttn(pl.LightningModule):
 
     def __init__(self):
@@ -29,7 +30,6 @@ class UNetAttn(pl.LightningModule):
         self.outc = OutConv(64, output_channels)
         self.attn = SelfAttn(512 // factor)
 
-
     @staticmethod
     def add_model_specific_args(parent_parser):
         parser = ArgumentParser(parents=[parent_parser], add_help=False)
@@ -47,7 +47,7 @@ class UNetAttn(pl.LightningModule):
         x, _ = self.attn(x)
         x = self.up2(x, x3)
         x = self.up3(x, x2)
-        
+
         x = self.up4(x, x1)
         x = self.outc(x)
         return x
@@ -81,7 +81,7 @@ class UNetAttn(pl.LightningModule):
             grid = make_grid(prediction)
             tensorboard.add_image('pred', grid)
         return l
-    
+
     def test_step(self, batch, batch_idx):
         img, annotation, fixation = batch['image'], batch['annotation'], batch['fixation']
         prediction = self.custom_forward(img)

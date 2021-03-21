@@ -1,5 +1,6 @@
 from argparse import ArgumentParser
 import pytorch_lightning as pl
+
 parser = ArgumentParser()
 
 # add PROGRAM level args

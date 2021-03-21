@@ -6,6 +6,7 @@ import pytorch_lightning as pl
 
 from loss.loss import nss, cc
 
+
 class SampleModel(pl.LightningModule):
 
     def __init__(self):
@@ -13,7 +14,6 @@ class SampleModel(pl.LightningModule):
         self.net = nn.Sequential(
             nn.Conv2d(in_channels=3, out_channels=1, kernel_size=3, stride=1, padding=1)
         )
-
 
     @staticmethod
     def add_model_specific_args(parent_parser):
@@ -44,7 +44,7 @@ class SampleModel(pl.LightningModule):
         # Logging to TensorBoard by default
         self.log('val_loss', l)
         return l
-    
+
     def test_step(self, batch, batch_idx):
         img, annotation, fixation = batch['image'], batch['annotation'], batch['fixation']
         prediction = self.net(img)

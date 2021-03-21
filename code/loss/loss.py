@@ -220,7 +220,7 @@ def shuffled(saliency_map, g_truth, other_map, num_split=100, step_size=0.1):
             # randomize choice of fixation locations
             rand_ind = ind[torch.randint(low=0, high=len(ind), size=(1, len(ind)))]
             # sal map values at random fixation locations of other random image
-            rand_fix[:, i] = s_vec[row_num][rand_ind[0, num_fixations_oth-1]]
+            rand_fix[:, i] = s_vec[row_num][rand_ind[0, num_fixations_oth - 1]]
 
         # calculate AUC per random split (set of random locations)
         auc = []
@@ -247,4 +247,3 @@ def shuffled(saliency_map, g_truth, other_map, num_split=100, step_size=0.1):
     return score
 
 # TODO: Im debugging this code @shupei
-
