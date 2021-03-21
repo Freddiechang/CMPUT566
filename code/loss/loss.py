@@ -65,42 +65,48 @@ def borji(saliency_map, g_truth, num_split=100, step_size=0.1):
         s_map[2:] = nnf.interpolate(s_map[2:], size=g_truth.shape[2:], mode='bicubic', align_corners=False)
 
     # normalize saliency map
-    s_map -= s_map.min(dim=(2, 3)).view(s_map.shape[0], 1, 1)
-    s_map /= s_map.max(dim=(2, 3)).view(s_map.shape[0], 1, 1)
+    s_mins = s_map.view(s_map.shape[0], s_map.shape[1], -1).amin(dim=2)
+    s_maxs = s_map.view(s_map.shape[0], s_map.shape[1], -1).amax(dim=2)
+
+    for i in range(0, s_map.shape[0]):
+        s_map[i, :, :, :] -= s_mins[i]
+        s_map[i, :, :, :] /= s_maxs[i]
 
     # vector of s_map
-    s_vec = torch.flatten(s_map)
-    g_vec = torch.flatten(g_truth)
+    s_vec = torch.flatten(s_map[:], start_dim=1, end_dim=-1)
+    g_vec = torch.flatten(g_truth[:], start_dim=1, end_dim=-1)
 
-    # s_map values at fixation locations
-    s_th = s_vec[g_vec > 0]
-    num_fixations = s_th.shape[0]
-    num_pixels = s_vec.shape[0]
+    score = torch.zeros(s_vec.shape[0])
+    for row_num in range(s_vec.shape[0]):
+        # s_map values at fixation locations
+        s_th = s_vec[row_num][g_vec[row_num] > 0]
+        num_fixations = s_th.shape[0]
+        num_pixels = s_vec[row_num].shape[0]
 
-    # for each fixation, sample num_split values from anywhere on the sal map
-    random = torch.randint(low=1, high=num_pixels, size=(num_fixations, num_split))
-    rand_fix = s_vec[random]
+        # for each fixation, sample num_split values from anywhere on the sal map
+        random = torch.randint(low=1, high=num_pixels, size=(num_fixations, num_split))
+        rand_fix = s_vec[row_num][random]
 
-    # calculate AUC per random split (set of random locations)
-    auc = []
-    for i in range(0, num_split):
-        cur_fix = rand_fix[:, i]
-        h_bound = max(torch.max(s_th), torch.max(cur_fix))
-        all_threshes = torch.flip(torch.FloatTensor([i for i in arange(0, h_bound.item(), step_size)]), dims=[0])
-        tp = torch.zeros(all_threshes.shape[0] + 2, 1)
-        fp = torch.zeros(all_threshes.shape[0] + 2, 1)
-        tp[0] = fp[0] = 0
-        tp[-1] = fp[-1] = 1
+        # calculate AUC per random split (set of random locations)
+        auc = []
+        for i in range(0, num_split):
+            cur_fix = rand_fix[:, i]
+            h_bound = max(torch.max(s_th), torch.max(cur_fix))
+            all_threshes = torch.flip(torch.FloatTensor([i for i in arange(0, h_bound.item(), step_size)]), dims=[0])
+            tp = torch.zeros(all_threshes.shape[0] + 2)
+            fp = torch.zeros(all_threshes.shape[0] + 2)
+            tp[0] = fp[0] = 0
+            tp[-1] = fp[-1] = 1
 
-        for j in range(0, all_threshes.shape[0]):
-            thresh = all_threshes[j]
-            tp[j + 1] = (s_th >= thresh).sum() / num_fixations
-            fp[j + 1] = (cur_fix >= thresh).sum() / num_fixations
-        # im not sure about this line:
-        auc.append(torch.trapz(fp, tp))
+            for j in range(0, all_threshes.shape[0]):
+                thresh = all_threshes[j]
+                tp[j + 1] = (s_th >= thresh).sum() / num_fixations
+                fp[j + 1] = (cur_fix >= thresh).sum() / num_fixations
+            # im not sure about this line:
+            auc.append(torch.trapz(fp, tp))
 
-    result = torch.stack(auc, dim=0)
-    score = torch.mean(result)
+        result = torch.stack(auc, dim=0)
+        score[row_num] = torch.mean(result)
 
     return score
 
@@ -126,33 +132,38 @@ def judd(saliency_map, g_truth, jitter=False):
         s_map = s_map + torch.rand(s_map.shape) / 10000000
 
     # vector of s_map
-    s_vec = torch.flatten(s_map)
-    g_vec = torch.flatten(g_truth)
+    s_vec = torch.flatten(s_map[:], start_dim=1, end_dim=-1)
+    g_vec = torch.flatten(g_truth[:], start_dim=1, end_dim=-1)
+    score = torch.zeros(s_vec.shape[0])
 
-    # s_map values at fixation locations
-    s_th = s_vec[g_vec > 0]
+    for row_num in range(s_vec.shape[0]):
+        # s_map values at fixation locations
+        s_th = s_vec[row_num][g_vec[row_num] > 0]
 
-    num_fixations = s_th.shape[0]
-    num_pixels = s_vec.shape[0]
+        num_fixations = s_th.shape[0]
+        num_pixels = s_vec[row_num].shape[0]
 
-    all_threshes, _ = torch.sort(s_th, descending=True)
+        all_threshes, _ = torch.sort(s_th, descending=True)
 
-    tp = torch.zeros(all_threshes.shape[0] + 2, 1)
-    fp = torch.zeros(all_threshes.shape[0] + 2, 1)
+        tp = torch.zeros(all_threshes.shape[0] + 2)
+        fp = torch.zeros(all_threshes.shape[0] + 2)
 
-    tp[0] = fp[0] = 0
-    tp[-1] = fp[-1] = 1
+        tp[0] = fp[0] = 0
+        tp[-1] = fp[-1] = 1
 
-    for i in range(0, num_fixations):
-        thresh = all_threshes[i]
-        # total number of sal map values above threshold
-        above_thresh = (s_th >= thresh).sum()
-        # ratio sal map values at fixation locations above threshold
-        tp[i + 1] = i / num_fixations
-        # ratio other sal map values above threshold
-        fp[i + 1] = (above_thresh - i) / (num_pixels - num_fixations)
+        for i in range(0, num_fixations):
+            thresh = all_threshes[i]
+            # total number of sal map values above threshold
+            above_thresh = (s_th >= thresh).sum()
+            # ratio sal map values at fixation locations above threshold
+            tp[i + 1] = i / num_fixations
+            # ratio other sal map values above threshold
+            fp[i + 1] = (above_thresh - i) / (num_pixels - num_fixations + 1)
 
-    return torch.trapz(fp, tp)
+        # torch.trapz  first index is y(function) and second is x
+        score[row_num] = torch.trapz(tp, fp)
+
+    return score
 
 
 def shuffled(saliency_map, g_truth, other_map, num_split=100, step_size=0.1):
@@ -169,65 +180,71 @@ def shuffled(saliency_map, g_truth, other_map, num_split=100, step_size=0.1):
     """
 
     s_map = saliency_map.clone().detach()
+    o_map = other_map.clone().detach()
 
     # make the saliencyMap the size of the image of fixationMap
     if s_map.shape[2:] != g_truth.shape[2:]:
         import torch.nn.functional as nnf
         s_map[2:] = nnf.interpolate(s_map[2:], size=g_truth.shape[2:], mode='bicubic', align_corners=False)
 
+    if o_map.shape[2:] != g_truth.shape[2:]:
+        import torch.nn.functional as nnf
+        o_map[2:] = nnf.interpolate(o_map[2:], size=g_truth.shape[2:], mode='bicubic', align_corners=False)
+
     # normalize saliency map
-    _, s_mins = s_map.view(s_map.shape[0], s_map.shape[1], -1).min(dim=2)
-    _, s_maxs = s_map.view(s_map.shape[0], s_map.shape[1], -1).max(dim=2)
+    s_mins = s_map.view(s_map.shape[0], s_map.shape[1], -1).amin(dim=2)
+    s_maxs = s_map.view(s_map.shape[0], s_map.shape[1], -1).amax(dim=2)
 
     for i in range(0, s_map.shape[0]):
         s_map[i, :, :, :] -= s_mins[i]
         s_map[i, :, :, :] /= s_maxs[i]
     # vector of s_map
-    s_vec = torch.flatten(s_map)
-    g_vec = torch.flatten(g_truth)
+    s_vec = torch.flatten(s_map[:], start_dim=1, end_dim=-1)
+    g_vec = torch.flatten(g_truth[:], start_dim=1, end_dim=-1)
+    o_vec = torch.flatten(o_map[:], start_dim=1, end_dim=-1)
+    score = torch.zeros(s_vec.shape[0])
 
-    # s_map values at fixation locations
-    s_th = s_vec[g_vec > 0]
+    for row_num in range(s_vec.shape[0]):
+        # s_map values at fixation locations
+        s_th = s_vec[row_num][g_vec[row_num] > 0]
 
-    num_fixations = s_th.shape[0]
+        num_fixations = s_th.shape[0]
 
-    # find fixation locations on other images
-    ind = numpy.argwhere(other_map.numpy())
+        # find fixation locations on other images
+        ind = numpy.argwhere(o_vec[row_num].numpy())
 
-    num_fixations_oth = min(num_fixations, len(ind))
-    rand_fix = torch.zeros(num_fixations_oth, num_split)
+        num_fixations_oth = min(num_fixations, len(ind))
+        rand_fix = torch.zeros(num_fixations_oth, num_split)
 
-    for i in range(0, num_split):
-        # randomize choice of fixation locations
-        rand_ind = ind[torch.randint(low=0, high=len(ind), size=(1, len(ind)))]
-        # sal map values at random fixation locations of other random image
-        rand_fix[:, i] = s_vec[rand_ind[0, num_fixations_oth-1]]
+        for i in range(0, num_split):
+            # randomize choice of fixation locations
+            rand_ind = ind[torch.randint(low=0, high=len(ind), size=(1, len(ind)))]
+            # sal map values at random fixation locations of other random image
+            rand_fix[:, i] = s_vec[row_num][rand_ind[0, num_fixations_oth-1]]
 
-    # calculate AUC per random split (set of random locations)
-    auc = []
+        # calculate AUC per random split (set of random locations)
+        auc = []
 
-    for i in range(0, num_split):
-        cur_fix = rand_fix[:, i]
-        h_bound = max(torch.max(s_th), torch.max(cur_fix))
-        all_threshes = torch.flip(torch.FloatTensor([i for i in arange(0, h_bound.item(), step_size)]), dims=[0])
-        tp = torch.zeros(all_threshes.shape[0] + 2, 1)
-        fp = torch.zeros(all_threshes.shape[0] + 2, 1)
+        for i in range(0, num_split):
+            cur_fix = rand_fix[:, i]
+            h_bound = max(torch.max(s_th), torch.max(cur_fix))
+            all_threshes = torch.flip(torch.FloatTensor([i for i in arange(0, h_bound.item(), step_size)]), dims=[0])
+            tp = torch.zeros(all_threshes.shape[0] + 2, 1)
+            fp = torch.zeros(all_threshes.shape[0] + 2, 1)
 
-        tp[0] = fp[0] = 0
-        tp[-1] = fp[-1] = 1
+            tp[0] = fp[0] = 0
+            tp[-1] = fp[-1] = 1
 
-        for j in range(0, all_threshes.shape[0]):
-            thresh = all_threshes[j]
-            tp[j + 1] = (s_th >= thresh).sum() / num_fixations
-            fp[j + 1] = (cur_fix >= thresh).sum() / num_fixations_oth
-        # still, im not sure about this line:
-        auc.append(torch.trapz(fp, tp))
+            for j in range(0, all_threshes.shape[0]):
+                thresh = all_threshes[j]
+                tp[j + 1] = (s_th >= thresh).sum() / num_fixations
+                fp[j + 1] = (cur_fix >= thresh).sum() / num_fixations_oth
+            # still, im not sure about this line:
+            auc.append(torch.trapz(fp, tp))
 
-    result = torch.stack(auc, dim=0)
-    score = torch.mean(result)
+        result = torch.stack(auc, dim=0)
+        score[row_num] = torch.mean(result)
     return score
 
-# TODO: i need to change all s_vec = torch.flatten(s_map) to s_vec with size of batch for each Image and each map @makbn
-# TODO: i need to change  @makbn
-# TODO: this code has some problem please dont merge @shupei
+# TODO: Im debugging this code @shupei
 
