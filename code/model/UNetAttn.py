@@ -50,7 +50,9 @@ class UNetAttn(pl.LightningModule):
         
         x = self.up4(x, x1)
         x = self.outc(x)
-        return x
+        out_x = x - x.view(x.shape[0], -1).min(dim=1)[0].view(x.shape[0], 1, 1, 1)
+        out_x = out_x / out_x.view(x.shape[0], -1).max(dim=1)[0].view(x.shape[0], 1, 1, 1)
+        return out_x
 
     def forward(self, x):
         # in lightning, forward defines the prediction/inference actions
@@ -61,7 +63,7 @@ class UNetAttn(pl.LightningModule):
         # It is independent of forward
         img, annotation, fixation = batch['image'], batch['annotation'], batch['fixation']
         prediction = self.custom_forward(img)
-        l = -1 * nss(prediction, fixation).sum()
+        l = F.mse_loss(prediction, annotation)
         # Logging to TensorBoard by default
         self.log('train_loss', l)
         return l
@@ -71,25 +73,25 @@ class UNetAttn(pl.LightningModule):
         prediction = self.custom_forward(img)
         l = nss(prediction, fixation).sum()
         # Logging to TensorBoard by default
-        self.log('val_loss', l)
-        if batch_idx % 20 == 0:
+        self.log('val_acc', l, on_step=False, on_epoch=True, sync_dist=True)
+        if batch_idx % 50 == 0:
             tensorboard = self.logger.experiment
             grid = make_grid(img)
-            tensorboard.add_image('image', grid)
+            tensorboard.add_image('image', grid, global_step=self.global_step)
             grid = make_grid(annotation)
-            tensorboard.add_image('gt', grid)
+            tensorboard.add_image('gt', grid, global_step=self.global_step)
             grid = make_grid(prediction)
-            tensorboard.add_image('pred', grid)
+            tensorboard.add_image('pred', grid, global_step=self.global_step)
         return l
     
     def test_step(self, batch, batch_idx):
         img, annotation, fixation = batch['image'], batch['annotation'], batch['fixation']
         prediction = self.custom_forward(img)
-        l = nss(prediction, fixation).sum()
+        l = nss(prediction, fixation).mean()
         # Logging to TensorBoard by default
-        self.log('test_loss', l)
+        self.log('test_acc', l, on_step=False, on_epoch=True)
         return l
 
     def configure_optimizers(self):
-        optimizer = torch.optim.Adam(self.parameters(), lr=1e-3)
+        optimizer = torch.optim.Adam(self.parameters(), lr=1e-2)
         return optimizer

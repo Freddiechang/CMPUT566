@@ -2,6 +2,7 @@ from os import listdir
 from os.path import isfile, join, isdir
 
 import numpy as np
+import torch
 from torch.utils.data import Dataset, DataLoader, random_split
 from torchvision import transforms
 from PIL import Image
