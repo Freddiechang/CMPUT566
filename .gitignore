@@ -9,3 +9,5 @@ __pycache__
 code/MNIST
 dataset
 lightning_logs
+saved_models
+comparison
