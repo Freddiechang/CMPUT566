@@ -18,7 +18,7 @@ model = model.load_from_checkpoint(saved_model_path)
 index = 100
 x = data_module[index]
 result = integrated_gradients(
-    x["image"].numpy(), 
+    x["image"].unsqueeze(0).numpy(), 
     model, 
     baseline=None, 
     steps=20, 

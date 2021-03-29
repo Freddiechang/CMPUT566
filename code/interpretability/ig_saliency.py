@@ -1,3 +1,5 @@
+import torch
+import numpy as np
 def integrated_gradients(inputs, model, baseline=None, steps=20, gpu_device="cuda:0"):
     """
     inputs: One numpy array of a figure, size of which fit the input of the network
@@ -5,6 +7,8 @@ def integrated_gradients(inputs, model, baseline=None, steps=20, gpu_device="cud
     steps: The steps that use sum to estimate integration
     gpu_device: Use gpu or cpu
     """
+    # move model to device
+    model.to(gpu_device)
     # Set the baseline if not exist
     if baseline is None:
         baseline = 0 * inputs
