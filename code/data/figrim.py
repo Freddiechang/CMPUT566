@@ -10,7 +10,6 @@ from PIL import Image
 from pytorch_lightning.core.datamodule import LightningDataModule
 import os
 
-
 """
     A total of 630 target images were chosen from the FIGRIM fine-grained image memorability dataset, 
     by sampling 30 images from each of FIGRIM's 21 indoor and outdoor scene categories.
@@ -26,6 +25,8 @@ import os
                     -FIXATIONMAPS/[airport_terminal, bathroom,castle, ..., tower]
                     -Targets/[airport_terminal, bathroom,castle, ..., tower]
 """
+
+
 class FIGRIM(Dataset):
 
     @staticmethod
@@ -37,7 +38,8 @@ class FIGRIM(Dataset):
                 continue
             sub_directory = join(data_directory, directory)
             images.extend(
-                sorted([join(sub_directory, f) for f in listdir(sub_directory) if (isfile(join(sub_directory, f)) and f not in error_list)]))
+                sorted([join(sub_directory, f) for f in listdir(sub_directory) if
+                        (isfile(join(sub_directory, f)) and f not in error_list)]))
         return images
 
     def __init__(self, args, mode="test"):
@@ -49,12 +51,12 @@ class FIGRIM(Dataset):
 
         # FIGRIM dataset contains some image inside Targets folder without any fixation map and loc
         self.FIGRIM_DATASET_ERROR = ['sun_abpqxslcljhrwmck.jpg',
-                                    'sun_bsccnfecifucnavf.jpg',
-                                    'sun_auwrraazjwdcjcjg.jpg',
-                                    'sun_bdwttbytrbnqyqsk.jpg',
-                                    'sun_bjitfqyiepkgfkks.jpg',
-                                    'sun_bgdykfpjgudqpzlu.jpg',
-                                    '.DS_Store']
+                                     'sun_bsccnfecifucnavf.jpg',
+                                     'sun_auwrraazjwdcjcjg.jpg',
+                                     'sun_bdwttbytrbnqyqsk.jpg',
+                                     'sun_bjitfqyiepkgfkks.jpg',
+                                     'sun_bgdykfpjgudqpzlu.jpg',
+                                     '.DS_Store']
         data_root = args.data_root
 
         # transform for image and annotation/fixation map, respectively
@@ -93,7 +95,6 @@ class FIGRIM(Dataset):
         return len(self.images)
 
     def __getitem__(self, idx):
-        print(idx)
         img_path = self.images[idx]
         annotation_path = self.annotations[idx]
         fixation_path = self.fixations[idx]

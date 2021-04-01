@@ -10,7 +10,6 @@ from PIL import Image
 from pytorch_lightning.core.datamodule import LightningDataModule
 import os
 
-
 """
     2K filler images were chosen in equal proportions from the same scene categories (94-105 images per category). 
     In a single session, a participant would see a sequence of about 1000 images, of which about 157-158 were targets 
@@ -22,11 +21,13 @@ import os
     fixlc: http://figrim.mit.edu/FIXATIONLOCS_fillers.zip
     
     dataset structure:
-        dataset/FIGRIM/
-                    -FIXATIONLOCS/[airport_terminal, bathroom,castle, ..., tower]
-                    -FIXATIONMAPS/[airport_terminal, bathroom,castle, ..., tower]
-                    -Targets/[airport_terminal, bathroom,castle, ..., tower]
+        dataset/Fillers/
+                    -FIXATIONLOCS_fillers/[airport_terminal, amusement_park, badlands, ..., tower]
+                    -FIXATIONMAPS_fillers/[airport_terminal, amusement_park, badlands, ..., tower]
+                    -Fillers/[airport_terminal, amusement_park, badlands, ..., tower]
 """
+
+
 class FILLER(Dataset):
 
     @staticmethod
@@ -38,7 +39,8 @@ class FILLER(Dataset):
                 continue
             sub_directory = join(data_directory, directory)
             images.extend(
-                sorted([join(sub_directory, f) for f in listdir(sub_directory) if (isfile(join(sub_directory, f)) and f not in error_list)]))
+                sorted([join(sub_directory, f) for f in listdir(sub_directory) if
+                        (isfile(join(sub_directory, f)) and f not in error_list)]))
         return images
 
     def __init__(self, args, mode="test"):
@@ -88,7 +90,6 @@ class FILLER(Dataset):
         return len(self.images)
 
     def __getitem__(self, idx):
-        print(idx)
         img_path = self.images[idx]
         annotation_path = self.annotations[idx]
         fixation_path = self.fixations[idx]
@@ -159,6 +160,3 @@ class FILLERDataModule(LightningDataModule):
                                prefetch_factor=self.args.prefetch
                                )
         return data_test
-
-
-
