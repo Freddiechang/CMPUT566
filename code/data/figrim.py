@@ -164,15 +164,3 @@ class FIGRIMDataModule(LightningDataModule):
                                prefetch_factor=self.args.prefetch
                                )
         return data_test
-
-
-def load_data(data_directory, error=[]):
-    images = []
-    for directory in sorted(os.listdir(data_directory)):
-        # ignore any hidden folder like .DS_Store
-        if directory[0] == ".":
-            continue
-        sub_directory = join(data_directory, directory)
-        images.extend(
-            sorted([f for f in listdir(sub_directory) if (isfile(join(sub_directory, f)) and f not in error)]))
-    return images
