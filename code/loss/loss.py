@@ -8,8 +8,8 @@ def nss(prediction, ground_truth):
         :param prediction : predicted saliency map, 4D tensor: (batch, 1, h, w)
         :return score: NSS score: tensor of (batch)
     """
-    sal_map = prediction - prediction.mean(dim=(2, 3)).view(prediction.shape[0], 1, 1)
-    sal_map = sal_map / prediction.std(dim=(2, 3), unbiased=True).view(prediction.shape[0], 1, 1)
+    sal_map = prediction - prediction.mean(dim=(2, 3)).view(prediction.shape[0], 1, 1, 1)
+    sal_map = sal_map / prediction.std(dim=(2, 3), unbiased=True).view(prediction.shape[0], 1, 1, 1)
     sal_map = sal_map * (ground_truth > 0)
     loss = sal_map.sum(dim=(2, 3)) / ground_truth.count_nonzero(dim=(2, 3))
     return loss

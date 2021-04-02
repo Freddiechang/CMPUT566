@@ -63,7 +63,8 @@ class UNetAttn(pl.LightningModule):
         # It is independent of forward
         img, annotation, fixation = batch['image'], batch['annotation'], batch['fixation']
         prediction = self.custom_forward(img)
-        l = F.mse_loss(prediction, annotation)
+        #l = -1 * cc(prediction, annotation).mean()
+        l = -1 * nss(prediction, fixation).mean()
         # Logging to TensorBoard by default
         self.log('train_loss', l)
         return l
@@ -87,7 +88,8 @@ class UNetAttn(pl.LightningModule):
     def test_step(self, batch, batch_idx):
         img, annotation, fixation = batch['image'], batch['annotation'], batch['fixation']
         prediction = self.custom_forward(img)
-        l = nss(prediction, fixation).mean()
+        l = cc(prediction, annotation).mean()
+        #l = nss(prediction, fixation).mean()
         # Logging to TensorBoard by default
         self.log('test_acc', l, on_step=False, on_epoch=True)
         return l
