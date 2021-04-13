@@ -226,6 +226,8 @@ It can be calculated using Eq. \ref{EQ:NSS}.
 In this equation, $S$ is the saliency map, $\bar{S}$ is the mean of $S$, $\sigma_{S}$ is 
 the standard deviation of $S$, $F$ is the fixation map with only $0$ and $1$ as pixel values in it,
 $T_{i}$ is the pixel value in $T$ at location $i$, and $N$ is the total number of non-zero pixels in $F$.
+One way to interprete it is that it represents the confidence interval $(-NSS\times\sigma, NSS\times\sigma)$, where
+$\sigma = 1$. Therefore a higher NSS means a larger confidence interval, i.e. better performance.
 
 The CC is the linear correlation coefficient between a model saliency map and an empirical saliency map 
 gained from convolving the fixation locations with a Gaussian kernel. It can be calculated using EQ. \ref{EQ:CC}. 
@@ -277,14 +279,15 @@ For learning rate we experimented with $0.01$ and $0.001$.
 We use Pytorch Lightning framework \cite{falcon2019pytorch} to implement our project. Our code (including \LaTeX files for this
 report) is available at \href{https://github.com/Freddiechang/CMPUT566}{our GitHub repo page}.
 The model is trained for 200 epochs under each hyperparameter setting. The performance scores are listed in Table \ref{tbl:performance}.
-\begin{adjustwidth}{0cm}{0cm}
-\begin{table}[!h]
+\begin{table}[t]
+    \begin{adjustwidth}{-1.4cm}{}
     \begin{tabular}{cc|cccc}
         \hline
         Loss function & Attention module & NSS(SALICON) & CC(SALICON) & NSS(CAT2000) & CC(CAT2000)\\
         MSE(3) & Yes & 1.1585 & 0.8514 & 1.5873 & 0.6063\\
         MSE(2) & No & 1.1639 & 0.8564 & 1.5980 & 0.6102\\
-        CC(2) & Yes & 1.1624 & 0.8556 & 1.5979 & 0.6120\\
+        CC(2) & Yes & 1.1595 & 0.8533 & 1.5896 & 0.6085\\
+        $\text{CC}^{\star}\text{(2)}$& Yes & 1.1766 & 0.8643 & 1.5982 & 0.6111\\
         CC(1) & No & 1.1725 & 0.8624 & 1.6169 & 0.6185\\
         NSS(1) & Yes & 0.8871 & 0.5984 & 1.2306 & 0.4399\\
         \hline
@@ -292,13 +295,38 @@ The model is trained for 200 epochs under each hyperparameter setting. The perfo
         \multicolumn{2}{c}{CAT2000 average} & NA & NA & 2.97 & 1 \\
         \hline
     \end{tabular}
+    \end{adjustwidth}
     \caption{Performance under different settings. The numbers in the brackets after the loss function names indicate
     how many experiments we did under this setting, and the average performance is reported. We also calculated the performance
-    baseline using the groundtruth fixation maps and saliency mapd from the datasets, and the scores are reported in SALICON average
-    and CAT2000 average rows.}
+    baseline using the groundtruth fixation maps and saliency mapd from the datasets, and the scores are reported in ``SALICON average''
+    and ``CAT2000 average'' rows. The models in row ``$\text{CC}^{\star}\text{(2)}$'' are trained using learning rate $0.001$, all
+    other models are trained using learning rate $0.01$.}
     \label{tbl:performance}
 \end{table}
-\end{adjustwidth}
+The model trained using CC and a learning rate of $0.001$ has the best performance, but the performance
+across different hyperparameter settings does not show too much difference. We noticed that
+the model performs better on SALICON than on CAT2000. We think the reason for that is the $\sigma$
+we used to create the groundtruth saliency maps in SALICON is too large. As can be seen from Table \ref{tbl:performance},
+the average NSS for the groudtruth saliency maps in SALICON is only $1.5691$, much less than that
+of CAT2000. This indicates the highlighted areas in the saliency maps are too large. As a consequence,
+the models trained using those saliency maps are not optimal.
+
+Some output examples are shown in Figure \ref{img:output_example}. The model we used to generate 
+those images are trained using CC and a learning rate of $0.001$. The predictions appear to be
+very similar to the groudtruth, which means our model can successfully determine the visual saliency
+in the input images.
+\begin{figure}[!h]
+    \begin{adjustwidth}{-0.6cm}{}
+    \centering
+    \includegraphics[width=7in]{imgs/out_original_image.png}
+    \includegraphics[width=7in]{imgs/out_prediction.png}
+    \includegraphics[width=7in]{imgs/out_groundtruth.png}
+    \end{adjustwidth}
+    \caption{Some output examples. The first two rows are the original input images.
+    The second two rows are the predictions of the model. The third two rows are the
+    ground truth saliency maps from the SALICON dataset.}
+    \label{img:output_example}
+\end{figure}
 
 
 
@@ -307,31 +335,35 @@ The model is trained for 200 epochs under each hyperparameter setting. The perfo
 
 
 
+\section{Discussion, Conclusions, Future work}
+\subsection{Ethics}
+The first ethical concern is data privacy. 
+When the model is trained, figures derived by subjects’ eye movements are sent into the model, 
+which carries some personal information. 
+Although the parameters in the model store abstract features, 
+there is still a concern that some special patterns are recorded in the model, 
+especially when we use an attention level that receives features of lower levels. 
+For example, if some parts of a figure attract a subject while other people will not pay attention to these parts, 
+the effect on the saliency map will not be conspicuous in the training data after averaging. 
+However, if the model boosts the weight of this special information, 
+and some people compare the strange outputs with the real data of other people, 
+they will know for sure that the model has some preference, 
+which can be derived from the eye movement data of one of the subjects.
 
+The second issue is that our model may not produce a good representation of real data. 
+SALICON dataset contains usually normal figures. 
+CAT2000 includes many strange types of figures but probably they cannot perfectly imitate the distribution of information in the real world. 
+When we are playing games or watch slides, the information boxes, 
+the moving arrow of mouse and some other disturbance will explicitly influence human saliency detection. 
+If we design our compression algorithm depending totally on predicted saliency, 
+it will not always have good performance. 
+The subjects that contribute their eye movement data also cannot represent all the people in the world. Children, people with color deficiency or experts in some fields may have some special preference in their attention system.
 
-
-
-
-
-
-
-
-
-% not sure if we should keep this part
-\subsection{Further Verification}
-
-The first verification is the pre-training modification. We use the same series of training samples to train two models. One of them is with the attention layer. The other replaces this layer with a simple one (e.g. fully connection layer). Then we will compare the training process, including the convergence speed, the loss change and the final performance measured by different metrics. If the attention mechanism is simple enough and can be easily replaced by other layers or integrated into the network, then it does not have any specialties.
-
-The second verification is the post-training verification. Namely, during test, we will disable the attention layer or add random noise and compare the final performance with the output of the normal framework. This step will check the contribution and importance of the attention layer. If the metrics to measure the performance have different levels of changes, we can infer about the properties of the attention layers according to the characteristic of these metrics.
-
-We are also interested in what information in the picture is used by the algorithm to calculate the output. Some pixels, like local sharp margins of the objects, may help locate the focused area, but may not be themselves focused. A large area of the same color in the middle may be coded as global information and help the network to distract attention to more important parts of the pictures.
-We might use the Integrated Gradients algorithm (IG) \cite{sundararajan2017axiomatic} to analyze what pixels in the picture contributes to the result. The algorithm does the following thing: Make the figure slowly change from a totally black or grey background to the original figure.
-After each step of changing, we calculate the gradients of a critical value to all the pixels. (This critical value can be the sum of the values of the highly focused pixels.) We can integrate these gradients (sum and multiply by pixel changes) to show which pixels have the most contribution to the final result during changing.
-It might be interesting if we can find some pixels that are not highlighted in the saliency map but help the machine to focus. 
-During this process, we can also monitor our network's sensitivity to dimmed picture and explore whether it corresponds with human feelings. 
-
-If time permitting, we are going to test whether the position of the attention layer will change the result. We can explore whether the attention layer works well on simple or complex features based on the depth of the network.
-
+The most harmful issue can be the misuse of the model. 
+If saliency can be detected at a low price, the parameter can be tuned to do the opposite, 
+which is detecting the areas that may attract the least attention. 
+Some ill-disposed people will take advantage of this to hide some unhealthy or harmful contents in the most inconspicuous parts of the pictures to avoid being checked by supervisors. 
+This can cause undetectable hurt to the users of these media files.
 
 
 \section{Task Distribution}
@@ -368,19 +400,28 @@ Mehdi proofread and revised the whole document.
 
 
 
-\subsection{Future Plan}
-Step1: Before the March 11 checkpoint, we are going to write the code of the CNN network and applies attention mechanism to it. Coding work has already been finished by Shupei and Mehdi and the code is running smoothly.
 
-Step2: For the first week after the checkpoint, we are going to use the validation set to choose good parameters of the network to achieve better results. We also consider accelerating the matrix calculation of the attention layer in order to get the results faster in later steps.
 
-Step3: For the second and third week after the checkpoint, we will mainly focus on interpretation tasks. This includes pre-training modification, post-training verification, and the integrated gradients method.
 
-Step4: Before submission, if we finish the above steps early, we can try other things mentioned, including implementing another attention mechanism or change the position of the attraction layer in the network in order to find more properties of the attention layer.
 
-%ethics
-%biased dataset
-%misuse: put some stuff in less salient region
-%
+
+
+
+% not sure if we should keep this part
+\subsection{Further Verification}
+
+The first verification is the pre-training modification. We use the same series of training samples to train two models. One of them is with the attention layer. The other replaces this layer with a simple one (e.g. fully connection layer). Then we will compare the training process, including the convergence speed, the loss change and the final performance measured by different metrics. If the attention mechanism is simple enough and can be easily replaced by other layers or integrated into the network, then it does not have any specialties.
+
+The second verification is the post-training verification. Namely, during test, we will disable the attention layer or add random noise and compare the final performance with the output of the normal framework. This step will check the contribution and importance of the attention layer. If the metrics to measure the performance have different levels of changes, we can infer about the properties of the attention layers according to the characteristic of these metrics.
+
+We are also interested in what information in the picture is used by the algorithm to calculate the output. Some pixels, like local sharp margins of the objects, may help locate the focused area, but may not be themselves focused. A large area of the same color in the middle may be coded as global information and help the network to distract attention to more important parts of the pictures.
+We might use the Integrated Gradients algorithm (IG) \cite{sundararajan2017axiomatic} to analyze what pixels in the picture contributes to the result. The algorithm does the following thing: Make the figure slowly change from a totally black or grey background to the original figure.
+After each step of changing, we calculate the gradients of a critical value to all the pixels. (This critical value can be the sum of the values of the highly focused pixels.) We can integrate these gradients (sum and multiply by pixel changes) to show which pixels have the most contribution to the final result during changing.
+It might be interesting if we can find some pixels that are not highlighted in the saliency map but help the machine to focus. 
+During this process, we can also monitor our network's sensitivity to dimmed picture and explore whether it corresponds with human feelings. 
+
+If time permitting, we are going to test whether the position of the attention layer will change the result. We can explore whether the attention layer works well on simple or complex features based on the depth of the network.
+
 \newpage
 
 \bibliographystyle{unsrt}
