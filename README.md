@@ -4,14 +4,22 @@ Visual saliency is the extent of attraction of objects to our visual system. The
 
 ![salicon_data_sample](https://raw.githubusercontent.com/Freddiechang/CMPUT566/main/documents/proposal/imgs/sample.png)
 
+
+
 ### Methodology
+
+---
 
 We choose CNN to predict the saliency maps. The filters in CNNs function as feature extractors, and as the depth of the convolutional layer go up, the features tend to be more sophisticated and high level.
 We use UNet as the backbone of our model. We use UNet as the backbone of our model. UNet has a symmetric expanding path made of several skip connections that enables precise localization. This feature can help assign correct visual saliency values to the corresponding locations. As for the attention mechanism, we implement it as a Pytorch module and then make this module part of UNet's data path. The goal of this module is to find long-distance dependencies across different regions in the image.
 
 * **Disclaimer**: This project has been implemented as the CMPUT 566, University of Alberta course assignment and may not be maintained/contributed actively.
 
+
+
 ### How to Run
+
+---
 
 Requirments:
 
@@ -43,6 +51,8 @@ python3 main.py --gpus 2 --accelerator ddp  --max_epochs 200 --resize --log_ever
 
 ### Project Structure
 
+---
+
 * `/code`: This directory contains implementation of the model and *DataModule*
   * `/data`: contains *DataModule* releated to each dataset.
   * `/interpretability`: contains saliency integrated gradients for interpretability
@@ -55,18 +65,24 @@ python3 main.py --gpus 2 --accelerator ddp  --max_epochs 200 --resize --log_ever
     * `/FIXATIONMAP`: fixation maps
     * `/Targets`: Images 
 
+
+
 ### Links
 
+---
+
 * You can find related datasets [here](http://saliency.mit.edu/datasets.html).
+
 * Our final proposal is available at this  [link](https://github.com/Freddiechang/CMPUT566/blob/main/documents/proposal/proposal.tex).
+
 * We used **Pytorch** libary and **PyTorch Lightning** framework in our implementation.
 
-
+  
 
 ### Contributors
+
+---
 
 * Sijie Ling
 * Shupei Zhang
 * Mehdi Akbarian Rastaghi
-
-  
