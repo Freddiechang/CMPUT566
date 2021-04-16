@@ -2,7 +2,8 @@
 
 Visual saliency is the extent of attraction of objects to our visual system. The study of visual saliency can help us to have a deeper understanding of the human visual system.  Researching in this area can lead to many applications, such as image/video segmentation, image/video compression, foreground annotation, perceptual quality assessment, etc.
 
-![salicon_data_sample](/Users/mehdiakbarian-rastaghi/Desktop/salicon_data_sample.png)
+![salicon_data_sample](https://github.com/Freddiechang/CMPUT566/blob/main/documents/proposal/imgs/example1_original.jpg)
+![salicon_data_sample](https://github.com/Freddiechang/CMPUT566/blob/main/documents/proposal/imgs/example1_saliency.jpg)
 
 ### Methodology
 
