@@ -143,8 +143,6 @@ All images are resized to $256 \times 256$ and normalized using mean ($[0.485, 0
 
 The visual saliency algorithm takes an input of the original figure and outputs a saliency map of the same size. Each pixel contains a float number from 0 to 1. Bigger numbers show that these pixels or areas get more focus. Therefore, it is a regression task, and the output can be visualized by plotting the saliency map. We can intuitively judge whether the output saliency map corresponds with real data from people to check its interpretability from the visualization.
 
-However, there are several questions about interpretability that we need to answer if our attention mechanism works. The methods to check the results we suppose are detailed described in the "Further Verification" section.
-
 \begin{itemize}
     \item The deep neural network is compelling and can fit complex functions. If we insert a layer for attention, how should we confirm that adding this layer can effectively improve performance? Other simpler layers cannot replace its function (like fully connection layers) or integrated into other layers?
     \item If the performance is good, how should we learn whether the final result depends largely on the attention layer since its function is to assign some weights to some features?
@@ -325,7 +323,7 @@ in the input images.
     \centering
     \includegraphics[width=7in]{imgs/out_original_image.png}
     \includegraphics[width=7in]{imgs/out_prediction.png}
-    \includegraphics[width=7in]{imgs/out_ground truth.png}
+    \includegraphics[width=7in]{imgs/out_groundtruth.png}
     \end{adjustwidth}
     \caption{Some output examples. The first two rows are the original input images.
     The second two rows are the predictions of the model. The third two rows are the
@@ -374,14 +372,14 @@ The Integrated Gradients figure also has deeper color in the upper part of the f
 \begin{figure}[!h]
     \centering
     \includegraphics[width=7in]{imgs/used_example_1.png}
-    \caption{A figure in Category "Action" of CAT2000, the background of which is more colorful than the foreground. The model without attention is led away by human clothes and faces in the background while the model with attention fixes correctly on the main character.}
+    \caption{A figure in Category ``Action'' of CAT2000, the background of which is more colorful than the foreground. The model without attention is led away by human clothes and faces in the background while the model with attention fixes correctly on the main character.}
     \label{img:int_example_1}
 \end{figure}
 
 \begin{figure}[!h]
     \centering
     \includegraphics[width=7in]{imgs/used_example_2.png}
-    \caption{A figure in Category "Pattern" of CAT2000, which is almost the same anywhere except a stick in a similar colour on the edge . The model with an attention layer fixes its attention in the middle of the figure while still finding the obscure stick.}
+    \caption{A figure in Category ``Pattern'' of CAT2000, which is almost the same anywhere except a stick in a similar colour on the edge . The model with an attention layer fixes its attention in the middle of the figure while still finding the obscure stick.}
     \label{img:int_example_2}
 \end{figure}
 
