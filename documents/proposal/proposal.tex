@@ -276,33 +276,41 @@ The loss functions we experimented with are:
 For learning rate we experimented with $0.01$ and $0.001$.
 
 \section{Results}
+% % % Modified by Linsage:Add subtitle begin
+\subsection{Model Performance}
+% % % Modified by Linsage: Add subtitle end
 We use Pytorch Lightning framework \cite{falcon2019pytorch} to implement our project. Our code (including \LaTeX files for this
 report) is available at \href{https://github.com/Freddiechang/CMPUT566}{our GitHub repo page}.
 The model is trained for 200 epochs under each hyperparameter setting. The performance scores are listed in Table \ref{tbl:performance}.
+% % % Modified by Linsage: Add rows and columns begin
 \begin{table}[t]
-    \begin{adjustwidth}{-1.4cm}{}
-    \begin{tabular}{cc|cccc}
+    \begin{adjustwidth}{-2cm}{0cm}
+    \begin{tabular}{ccc|cccc}
         \hline
-        Loss function & Attention module & NSS(SALICON) & CC(SALICON) & NSS(CAT2000) & CC(CAT2000)\\
-        MSE(3) & Yes & 1.1585 & 0.8514 & 1.5873 & 0.6063\\
-        MSE(2) & No & 1.1639 & 0.8564 & 1.5980 & 0.6102\\
-        CC(2) & Yes & 1.1595 & 0.8533 & 1.5896 & 0.6085\\
-        $\text{CC}^{\star}\text{(2)}$& Yes & 1.1761 & 0.8647 & 1.5989 & 0.6124\\
-        CC(1) & No & 1.1725 & 0.8624 & 1.6169 & 0.6185\\
-        NSS(1) & Yes & 0.8871 & 0.5984 & 1.2306 & 0.4399\\
+	   Loss function & $\text{Attention}^{[1]}$ & $\text{Attention}^{[2]}$ & NSS(SALICON) & CC(SALICON) & NSS(CAT2000) & CC(CAT2000)\\
+        MSE(3) & Yes & Yes & 1.1585 & 0.8514 & 1.5873 & 0.6063\\
+        MSE(3) & Yes & No & 1.1585 & 0.8516 & 1.5878 & 0.6066\\
+        MSE(2) & No & No & 1.1639 & 0.8564 & 1.5980 & 0.6102\\
+        CC(2) & Yes & Yes & 1.1595 & 0.8533 & 1.5896 & 0.6085\\
+        $\text{CC}^{\star}\text{(2)}$& Yes & Yes & 1.1761 & 0.8647 & 1.5989 & 0.6124\\
+        $\text{CC}^{\star}\text{(2)}$& Yes & No & 1.1608 & 0.8602 & 1.5748 & 0.6055\\
+        CC(1) & No & No & 1.1725 & 0.8624 & 1.6169 & 0.6185\\
+        NSS(1) & Yes & Yes & 0.8871 & 0.5984 & 1.2306 & 0.4399\\
         \hline
-        \multicolumn{2}{c}{SALICON average} & 1.5691 & 1 & NA & NA \\
-        \multicolumn{2}{c}{CAT2000 average} & NA & NA & 2.97 & 1 \\
+        \multicolumn{3}{c}{SALICON average} & 1.5691 & 1 & NA & NA \\
+        \multicolumn{3}{c}{CAT2000 average} & NA & NA & 2.97 & 1 \\
         \hline
     \end{tabular}
     \end{adjustwidth}
     \caption{Performance under different settings. The numbers in the brackets after the loss function names indicate
     how many experiments we did under this setting, and the average performance is reported. We also calculated the performance
-    baseline using the groundtruth fixation maps and saliency mapd from the datasets, and the scores are reported in ``SALICON average''
-    and ``CAT2000 average'' rows. The models in row ``$\text{CC}^{\star}\text{(2)}$'' are trained using learning rate $0.001$, all
-    other models are trained using learning rate $0.01$.}
+    baseline using the groundtruth fixation maps and saliency maps from the datasets, and the scores are reported in ``SALICON average''
+    and ``CAT2000 average'' rows. The models with a star sign ($\star$) in their names are trained using learning rate $0.001$, all
+    other models are trained using learning rate $0.01$. ``$\text{Attention}^{[1]}$'' column indicates if the models are trained with attention modules
+    in them; ``$\text{Attention}^{[2]}$'' column indicates if the attention modules are enabled during test time. }
     \label{tbl:performance}
 \end{table}
+% % % Modified by Linsage: Add rows and columns end
 The model trained using CC and a learning rate of $0.001$ has the best performance, but the performance
 across different hyperparameter settings does not show too much difference. We noticed that
 the model performs better on SALICON than on CAT2000. We think the reason for that is the $\sigma$
@@ -327,8 +335,60 @@ in the input images.
     ground truth saliency maps from the SALICON dataset.}
     \label{img:output_example}
 \end{figure}
+% % % Modified by Linsage: Add Verification and Interpretation begin
+
+The model trained with NSS loss has a performance that is significantly worse than other models.
+After we check the outputs, we found that there are many small highlighted spots in the outputs, which is similar to the fixation map in Figure \ref{img:data_example_2}.
+This shows that the model can learn the method to produce a fixation map, but the saliency map derived from it does not have the same distribution as the saliency map in the ground truth.
+
+Although the model is trained with SALICON, we also test it on CAT2000, which is an unseen dataset for the model.
+We notice that our models achieve NSS > 1.58 and CC > 0.6, which means that these models have good generalization.
+The performance is worse, probabaly because of two reasons.
+SALICON fixation is produced by internet collection of mouse clicking while CAT2000 is derived directly from eye tracking data.
+Almost all the SALICON figures are normal figures which can be categorized by object names (like chair or dog), while CAT2000 contains a large number of specifically designed figures like fractals or stick drawings.
 
 
+\subsection{Interpretation and Verification}
+
+We use two methods to check the impact of the attention layer.
+
+The first verification is the pre-training modification. We use the same series of training samples to train two models. One of them is with the attention layer. During training, out networks with the attention layer are sometimes unstable and suffer serious drop of performance.
+The training results between model with and without an attention layer do not have significant difference.
+We suppose  that this is because our original UNet is too complicated and redundant, so adding another simple unit cannot help improve the performance. The disturbed training can probably due to contradiction in traning goals between CNN and the attention layer.
+
+The second verification is the post-training verification. Namely, during test, we disable the attention layer to test the result. In the network trained by CC, the performance drops a little, but as a whole there is not much difference.
+When we analyze the ouput,we found that disabling the attention layer can only make big changes on only a very small portion of pixels and the total change is nearly invisible from visualization.
+We suppose that the attention layer can change the weight distribution in the middle of the network, but due to the complexity of the following layers, its impacts are exccessively dispersed so it does not make conspicuous changes to the output saliency map.
+
+In order to find some advantage of our network with the attention layer, we browse the outputs of these networks to look for some occasional obvious differences in results.
+We mainly search in CAT2000 because it contains more unconventional figures and can give us some inspiration on how the model is generalized what information the model uses to compute the results.
+We use Integrated Gradients \cite{sundararajan2017axiomatic} as the attribution method. During the implementation, we select all the pixels with saliency bigger than threshold = 0.5 and calculate the pixels in the input figures that contributes to their values.
+
+Two examples are Figure \ref{img:int_example_1} and Figure \ref{img:int_example_2}, which show that our model may have some ability to capture some global information.
+
+In Figure \ref{img:int_example_1}, the main character is in a very dark color and the background has some colorful patterns, which attracts the model without the attention layer. The Integrated Gradients figure shows that it is using mainly irrelevant information.
+However, the predicted saliency map by the model with attention layer is almost correct.
+From the Integrated Gradients figure, we see that the human body is strongly highlighted. Besides, we find that the pixels which show the margin around the legs also contribute to the result.
+
+Figure \ref{img:int_example_2} is mainly random noise with a obscure stick on the edge. Both models correcly predict that people will mainly focus on the center while our model also finds the stick.
+The Integrated Gradients figure also has deeper color in the upper part of the figure than in the lower part. We infer that it is not the stick itself (not highlighted) but the global information in the upper part that helps the decision of samiency map.
+
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=7in]{imgs/used_example_1.png}
+    \caption{A figure in Category "Action" of CAT2000, the background of which is more colorful than the foreground. The model without attention is led away by human clothes and faces in the background while the model with attention fixes correctly on the main character.}
+    \label{img:int_example_1}
+\end{figure}
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=7in]{imgs/used_example_2.png}
+    \caption{A figure in Category "Pattern" of CAT2000, which is almost the same anywhere except a stick in a similar colour on the edge . The model with an attention layer fixes its attention in the middle of the figure while still finding the obscure stick.}
+    \label{img:int_example_2}
+\end{figure}
+
+% % % Modified by Linsage: Add Verification and Interpretation end
 
 
 
@@ -336,6 +396,21 @@ in the input images.
 
 
 \section{Discussion, Conclusions, Future work}
+% % % Modified by Linsage: Add Discussion and Future Work begin
+\subsection{Discussion}
+
+In this project, we implement an attention layer and attach it to the traditional UNet to do saliency detection task. 
+We try different loss function and metrics, but since the UNet is complicated enough, an attention layer with a simple structure cannot significantly improve the performance.
+Despite this, we do find that our model with attention mechanism has better performance on some individual pictures.
+We also implement the Integrated Gradients method to analyse the result of these pictures.
+We find that not only the focused patterns themselves, but also some background or margin information strongly contributes to the result, which may in the future help people to make more conjectures about how surrounding patterns help decide saliency.
+This makes us believe that global information is important in saliency detection tasks.
+
+
+Although it is not a successful attempt, we conclude a few takeaway advice in model annd dataset selection:
+If we would to verify the usage of a simple unit, we should also begin with a model that has a compatible size.
+We can also do train and test on datasets with different distributions and characteristics to explore the limitations of models.
+
 \subsection{Ethics}
 The first ethical concern is data privacy. 
 When the model is trained, figures derived by subjects’ eye movements are sent into the model, 
@@ -352,12 +427,13 @@ which can be derived from the eye movement data of one of the subjects.
 
 The second issue is that our model may not produce a good representation of real data. 
 SALICON dataset contains usually normal figures. 
-CAT2000 includes many strange types of figures but probably they cannot perfectly imitate the distribution of information in the real world. 
+CAT2000 includes many abnormal types of figures but probably they cannot perfectly imitate the distribution of information in the real world. 
 When we are playing games or watch slides, the information boxes, 
 the moving arrow of mouse and some other disturbance will explicitly influence human saliency detection. 
 If we design our compression algorithm depending totally on predicted saliency, 
 it will not always have good performance. 
-The subjects that contribute their eye movement data also cannot represent all the people in the world. Children, people with color deficiency or experts in some fields may have some special preference in their attention system.
+The subjects that contribute their eye movement data also cannot represent all the people in the world.
+Children, people with color deficiency or experts in some fields may have some special preference in their attention system.
 
 The most harmful issue can be the misuse of the model. 
 If saliency can be detected at a low price, the parameter can be tuned to do the opposite, 
@@ -365,6 +441,22 @@ which is detecting the areas that may attract the least attention.
 Some ill-disposed people will take advantage of this to hide some unhealthy or harmful contents in the most inconspicuous parts of the pictures to avoid being checked by supervisors. 
 This can cause undetectable hurt to the users of these media files.
 
+\subsection{Future Work}
+
+If we have another semester to work on this project, we may try to optimize the network framework.
+The purpoose of saliency detection is efficiently processing the most useful information, and the attention layer we add acts as a gate to discard unimportant information in early processing to save computing resource.
+We can try to modify the network like this: When the amount of information is big (at the beginning and at the end of network), we will make the computation simpler, namely constructing CNNs with fewer kernels and layers.
+When the information is abstract (in the middle), we will decrease the number of neurons.
+This kind of decreasing computing resources may force the network to transmit information more efficiently.
+In this kind of netowrk, we can also change the position of the attention layer to see which place is the most optimized, in order to get an idea of how the early selection and late selection mechanisms are separated and cooperated in human brain.
+
+If people would like to continue working on this project, they may try to create a more abundant dataset. The CAT2000 has made a good start because it contains a considerable number of unconventional pictures.
+Although these kind of pictures are not normal, there is high possibility that they can be seen in games, slides and videos, which is more similar to the environment of huuman vision. 
+However, the distribution of pictures in the dataset does not accord with human experience, because we do not see indoor scenes and satelite maps at a same frequency.
+If there are some portable devices for recording eye movements, we can create a dataset directly based on human experience (privacy is also a problem), which can be used to create more generalized saliency detection model.
+We can also include the brain imaging data in the dataset to help improve the network structure.
+
+% % % Modified by Linsage: Add Discussion and Future Work end
 
 \section{Task Distribution}
 Credits for implementation:
@@ -394,33 +486,11 @@ Credits for this report:
     \item interpretability (Sijie and Shupei)
     \item algorithm (Shupei and Sijie)
     \item performance measurement (Shupei and Sijie)
+    \item results (Sijie and Shupei)
+    \item interpretation and verification (Sijie)
+    \item discussion, conclusions, future work (Sijie)
 \end{itemize}
 Mehdi proofread and revised the whole document.
-
-
-
-
-
-
-
-
-
-
-
-% not sure if we should keep this part
-\subsection{Further Verification}
-
-The first verification is the pre-training modification. We use the same series of training samples to train two models. One of them is with the attention layer. The other replaces this layer with a simple one (e.g. fully connection layer). Then we will compare the training process, including the convergence speed, the loss change and the final performance measured by different metrics. If the attention mechanism is simple enough and can be easily replaced by other layers or integrated into the network, then it does not have any specialties.
-
-The second verification is the post-training verification. Namely, during test, we will disable the attention layer or add random noise and compare the final performance with the output of the normal framework. This step will check the contribution and importance of the attention layer. If the metrics to measure the performance have different levels of changes, we can infer about the properties of the attention layers according to the characteristic of these metrics.
-
-We are also interested in what information in the picture is used by the algorithm to calculate the output. Some pixels, like local sharp margins of the objects, may help locate the focused area, but may not be themselves focused. A large area of the same color in the middle may be coded as global information and help the network to distract attention to more important parts of the pictures.
-We might use the Integrated Gradients algorithm (IG) \cite{sundararajan2017axiomatic} to analyze what pixels in the picture contributes to the result. The algorithm does the following thing: Make the figure slowly change from a totally black or grey background to the original figure.
-After each step of changing, we calculate the gradients of a critical value to all the pixels. (This critical value can be the sum of the values of the highly focused pixels.) We can integrate these gradients (sum and multiply by pixel changes) to show which pixels have the most contribution to the final result during changing.
-It might be interesting if we can find some pixels that are not highlighted in the saliency map but help the machine to focus. 
-During this process, we can also monitor our network's sensitivity to dimmed picture and explore whether it corresponds with human feelings. 
-
-If time permitting, we are going to test whether the position of the attention layer will change the result. We can explore whether the attention layer works well on simple or complex features based on the depth of the network.
 
 \newpage
 
