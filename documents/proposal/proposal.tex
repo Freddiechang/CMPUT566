@@ -279,10 +279,13 @@ report) is available at \href{https://github.com/Freddiechang/CMPUT566}{our GitH
 The model is trained for 200 epochs under each hyperparameter setting. The performance scores are listed in Table \ref{tbl:performance}.
 % % % Modified by Linsage: Add rows and columns begin
 \begin{table}[h!]
-    \begin{adjustwidth}{-2cm}{0cm}
-    \begin{tabular}{ccc|cccc}
+    \centering
+    %\begin{adjustwidth}{-2cm}{0cm}
+    \begin{tabular*}{\textwidth}{ccc|cccc}
         \hline
-	   Loss function & $\text{Attention}^{[1]}$ & $\text{Attention}^{[2]}$ & NSS(SALICON) & CC(SALICON) & NSS(CAT2000) & CC(CAT2000)\\
+        Loss& $\text{Attention}^{[1]}$ & $\text{Attention}^{[2]}$ & NSS & CC & NSS & CC\\
+        function&&&(SALICON)&(SALICON)&(CAT2000)&(CAT2000)\\
+        \hline
         MSE(3) & Yes & Yes & 1.1585 & 0.8514 & 1.5873 & 0.6063\\
         MSE(3) & Yes & No & 1.1585 & 0.8516 & 1.5878 & 0.6066\\
         MSE(2) & No & No & 1.1639 & 0.8564 & 1.5980 & 0.6102\\
@@ -295,8 +298,8 @@ The model is trained for 200 epochs under each hyperparameter setting. The perfo
         \multicolumn{3}{c}{SALICON average} & 1.5691 & 1 & NA & NA \\
         \multicolumn{3}{c}{CAT2000 average} & NA & NA & 2.97 & 1 \\
         \hline
-    \end{tabular}
-    \end{adjustwidth}
+    \end{tabular*}
+    %\end{adjustwidth}
     \caption{Performance under different settings. The numbers in the brackets after the loss function names indicate
 how many experiments we did under this setting, and the average performance is reported. We also calculated the performance
 baseline using the ground truth fixation maps and saliency maps from the datasets, and the scores are reported in ``SALICON average''
@@ -319,12 +322,12 @@ very similar to the ground truth, which means our model can successfully determi
 in the input images.
 
 \begin{figure}[h!]
-    \begin{adjustwidth}{-0.6cm}{}
+    %\begin{adjustwidth}{-0.6cm}{}
     \centering
-    \includegraphics[width=7in]{imgs/out_original_image.png}
-    \includegraphics[width=7in]{imgs/out_prediction.png}
-    \includegraphics[width=7in]{imgs/out_groundtruth.png}
-    \end{adjustwidth}
+    \includegraphics[width=\textwidth]{imgs/out_original_image.png}
+    \includegraphics[width=\textwidth]{imgs/out_prediction.png}
+    \includegraphics[width=\textwidth]{imgs/out_groundtruth.png}
+    %\end{adjustwidth}
     \caption{Some output examples. The first two rows are the original input images.
     The second two rows are the predictions of the model. The third two rows are the
     ground truth saliency maps from the SALICON dataset.}
